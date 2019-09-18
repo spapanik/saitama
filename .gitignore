@@ -1,4 +1,7 @@
 # python
 __pycache__/
-*.egg-info/
 requirements.txt
+
+# build
+dist/
+*.egg-info/
