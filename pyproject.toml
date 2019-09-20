@@ -40,6 +40,7 @@ punch = "saitama.punch:main"
 python = "^3.6"
 
 psycopg2 = "^2.8"
+toml = "^0.10"
 
 [tool.poetry.dev-dependencies]
 black = {version = "*", allows-prereleases = true}
