@@ -1,10 +1,10 @@
 import re
-import os
 import sys
 
 import psycopg2
 from psycopg2 import sql
 
+from .common import execute_script, get_db_options
 from .conf import Settings
 from .queries import migration as migration_queries
 
@@ -13,47 +13,11 @@ MIGRATION_NAME = re.compile(
 )
 
 
-def execute_script(cursor, path):
-    with open(path) as file:
-        cursor.execute(file.read())
-
-
 def _canonical_args(args):
-    db_options = {}
     settings = Settings()
 
-    host = args.host or os.environ.get("PGHOST") or settings.host
-    if host is not None:
-        db_options["host"] = host
-
-    port = args.port or os.environ.get("PGPORT") or settings.port
-    if port is not None:
-        db_options["port"] = port
-
-    user = (
-        args.user
-        or os.environ.get("PGUSER")
-        or os.environ.get("USER")
-        or settings.user
-    )
-    if user is not None:
-        db_options["user"] = user
-
-    password = (
-        args.password or os.environ.get("PGPASSWORD") or settings.password
-    )
-    if password is not None:
-        db_options["password"] = password
-
-    dbname = (
-        args.dbname or os.environ.get("PGDATABASE") or settings.dbname or user
-    )
-    if dbname is None:
-        raise ConnectionError("No database specified")
-    db_options["dbname"] = dbname
-
     return {
-        "db_options": db_options,
+        "db_options": get_db_options(args),
         "drop": args.drop,
         "interactive": not args.yes,
         "fake": args.fake,
@@ -61,6 +25,11 @@ def _canonical_args(args):
         "migration": args.migration,
         "migrations": settings.migrations,
     }
+
+
+def _create_migration_schema(cursor):
+    cursor.execute(migration_queries.create_schema)
+    cursor.execute(migration_queries.create_table)
 
 
 def _confirm_drop():
@@ -132,35 +101,28 @@ def _valid_migrations(
     return collected_migrations
 
 
-def prepare_db(cursor, db_options, *, drop=False, interactive=True):
-    cursor.execute(migration_queries.db_exists, db_options)
+def prepare_db(cursor, dbname, *, drop=False, interactive=True):
+    cursor.execute(migration_queries.db_exists, {"dbname": dbname})
     exists = cursor.fetchone()[0]
     if exists and drop:
         if interactive:
             _confirm_drop()
         else:
             print("WARNING: All data in the existing database will be lost!")
-        cursor.execute(migration_queries.terminate_db, db_options)
-        cursor.execute(migration_queries.drop_db.format(**db_options))
+        cursor.execute(migration_queries.terminate_db, {"dbname": dbname})
+        cursor.execute(migration_queries.drop_db.format(dbname=dbname))
     if not exists or drop:
         if not exists:
-            print(
-                f"Database {db_options['dbname']} does not exist, creating..."
-            )
-        cursor.execute(sql.SQL(migration_queries.create_db.format(**db_options)))
+            print(f"Database {dbname} does not exist, creating...")
+        cursor.execute(
+            sql.SQL(migration_queries.create_db.format(dbname=dbname))
+        )
         return
 
 
 def migrate(
-    cursor,
-    migrations,
-    target_migration,
-    *,
-    backwards=False,
-    fake=False,
+    cursor, migrations, target_migration, *, backwards=False, fake=False
 ):
-    cursor.execute(migration_queries.create_schema)
-    cursor.execute(migration_queries.create_table)
     cursor.execute(migration_queries.last_migration)
     last_migration = cursor.fetchone()
     valid_migrations = _valid_migrations(
@@ -194,12 +156,14 @@ def main(args):
         with connection.cursor() as cursor:
             prepare_db(
                 cursor,
-                db_options,
+                db_options["dbname"],
                 drop=args["drop"],
                 interactive=args["interactive"],
             )
-    with psycopg2.connect(**db_options) as connection:
+
+    with psycopg2.connect(args) as connection:
         with connection.cursor() as cursor:
+            _create_migration_schema(cursor)
             migrate(
                 cursor,
                 args["migrations"],
