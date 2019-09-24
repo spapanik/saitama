@@ -4,8 +4,8 @@ install: poetry.lock
 
 .PHONY: format
 format:
-	black .
 	isort -rc .
+	black .
 
 .PHONY: tests
 tests:
