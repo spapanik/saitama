@@ -161,7 +161,7 @@ def main(args):
                 interactive=args["interactive"],
             )
 
-    with psycopg2.connect(args) as connection:
+    with psycopg2.connect(**db_options) as connection:
         with connection.cursor() as cursor:
             _create_migration_schema(cursor)
             migrate(
