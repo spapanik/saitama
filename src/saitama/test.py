@@ -62,10 +62,7 @@ def _run_tests(cursor, test_functions):
 
 def main(args):
     args = _canonical_args(args)
-    migrate(
-        {"db_options": args["db_options"], **args["migration_args"]},
-        testing=True,
-    )
+    migrate({"db_options": args["db_options"], **args["migration_args"]}, testing=True)
     with psycopg2.connect(**args["db_options"]) as connection:
         with connection.cursor() as cursor:
             _prepare_db(cursor)

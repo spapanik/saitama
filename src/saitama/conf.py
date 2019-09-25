@@ -19,9 +19,7 @@ class Settings:
         self.dbname = settings.get("dbname")
         self.user = settings.get("user")
         self.password = settings.get("password")
-        self.migrations = pathlib.Path(
-            settings.get("migrations", "migrations")
-        )
+        self.migrations = pathlib.Path(settings.get("migrations", "migrations"))
         if not self.migrations.is_absolute():
             self.migrations = self.path.parent.joinpath(self.migrations)
         self.tests = pathlib.Path(settings.get("tests", "tests"))

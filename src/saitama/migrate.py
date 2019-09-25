@@ -53,11 +53,7 @@ def _check_migrations(state, target, collected_migrations):
     keys = sorted(collected_migrations.keys())
     start = keys[0]
     end = keys[-1]
-    if (
-        start != state + 1
-        or end != target
-        or end - start + 1 != target - state
-    ):
+    if start != state + 1 or end != target or end - start + 1 != target - state:
         raise LookupError("Missing migrations")
 
 
@@ -86,11 +82,7 @@ def _valid_migrations(last_migration, target_migration, migration_dir, backwards
         if (not backwards and state < migration_id <= target) or (
             backwards and target < migration_id <= state
         ):
-            collected_migrations[migration_id] = (
-                file,
-                match["name"],
-                backwards,
-            )
+            collected_migrations[migration_id] = (file, match["name"], backwards)
     if not backwards and target_migration is None:
         target = max(collected_migrations, default=state)
     if state == target:
@@ -114,9 +106,7 @@ def prepare_db(cursor, dbname, *, drop=False, interactive=True, quiet=False):
     if not exists or drop:
         if not exists and not quiet:
             print(f"Database {dbname} does not exist, creating...")
-        cursor.execute(
-            sql.SQL(migration_queries.create_db.format(dbname=dbname))
-        )
+        cursor.execute(sql.SQL(migration_queries.create_db.format(dbname=dbname)))
         return
 
 
@@ -145,11 +135,7 @@ def migrate(
             execute_script(cursor, file_path)
         cursor.execute(
             migration_queries.write_migration,
-            {
-                "migration_id": migration_id,
-                "name": name,
-                "backwards": backwards,
-            },
+            {"migration_id": migration_id, "name": name, "backwards": backwards},
         )
 
 
@@ -168,7 +154,7 @@ def main(args, *, testing=False):
                 db_options["dbname"],
                 drop=args["drop"],
                 interactive=args["interactive"],
-                quiet=args["quiet"]
+                quiet=args["quiet"],
             )
 
     with psycopg2.connect(**db_options) as connection:

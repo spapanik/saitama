@@ -21,23 +21,16 @@ def get_db_options(args):
         db_options["port"] = port
 
     user = (
-        args.user
-        or os.environ.get("PGUSER")
-        or os.environ.get("USER")
-        or settings.user
+        args.user or os.environ.get("PGUSER") or os.environ.get("USER") or settings.user
     )
     if user is not None:
         db_options["user"] = user
 
-    password = (
-        args.password or os.environ.get("PGPASSWORD") or settings.password
-    )
+    password = args.password or os.environ.get("PGPASSWORD") or settings.password
     if password is not None:
         db_options["password"] = password
 
-    dbname = (
-        args.dbname or os.environ.get("PGDATABASE") or settings.dbname or user
-    )
+    dbname = args.dbname or os.environ.get("PGDATABASE") or settings.dbname or user
     if dbname is None:
         raise ConnectionError("No database specified")
     db_options["dbname"] = dbname
