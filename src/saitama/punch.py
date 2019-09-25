@@ -2,6 +2,8 @@ import argparse
 
 from . import migrate, test
 
+__version__ = "0.3.0"
+
 
 def add_common_args(parser):
     parser.add_argument("-H", "--host", help="The postgres host")
@@ -14,6 +16,9 @@ def add_common_args(parser):
 def parse_args():
     parser = argparse.ArgumentParser(
         prog="punch", description="A utility to manage testing and migrating a database"
+    )
+    parser.add_argument(
+        "-v", "--version", action="store_true", help="Print the version and exit"
     )
     subparsers = parser.add_subparsers(dest="command")
 
@@ -50,9 +55,11 @@ def parse_args():
 
 def main():
     args = parse_args()
-    if args.command == "migrate":
+    if args.version is True:
+        print("Saitama", __version__)
+    elif args.command == "migrate":
         migrate.main(args)
-    if args.command == "test":
+    elif args.command == "test":
         test.main(args)
 
 
