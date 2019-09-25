@@ -1,5 +1,6 @@
 import sys
 
+import pastel
 import psycopg2
 
 from .common import execute_script, get_db_options
@@ -45,9 +46,14 @@ def _collect_tests(cursor, tests_path):
 
 
 def _run_single_test(cursor, test_name):
+    print(f'Running {test_name}...\t', end='')
     cursor.execute(test_queries.reset_assertions)
     cursor.execute(test_queries.run_single_test.format(test_name=test_name))
     result = cursor.fetchone()[0]
+    if result == 'pass':
+        print(pastel.colorize('<fg=green>🗸</>'))
+    else:
+        print(pastel.colorize('<fg=red>✗</>'))
     cursor.execute(
         test_queries.write_test_result, {"name": test_name, "result": result}
     )
@@ -57,7 +63,7 @@ def _run_tests(cursor, test_functions):
     for test_name in test_functions:
         _run_single_test(cursor, test_name)
     cursor.execute(test_queries.test_result)
-    return cursor.fetchone()[0]
+    return [row[0] for row in cursor.fetchall()]
 
 
 def main(args):
@@ -67,9 +73,11 @@ def main(args):
         with connection.cursor() as cursor:
             _prepare_db(cursor)
             test_functions = _collect_tests(cursor, args["test_args"]["tests"])
-            success = _run_tests(cursor, test_functions)
+            failed_tests = _run_tests(cursor, test_functions)
+            print("\nTest results:")
 
-    if not success:
-        print("Tests failed")
+    if failed_tests:
+        print(pastel.colorize('<fg=red>The following tests failed:</>'), end="\n * ")
+        print("\n * ".join(failed_tests))
         sys.exit(1)
-    print("Tests passed")
+    print(pastel.colorize('<fg=green>All tests passed!</>'))

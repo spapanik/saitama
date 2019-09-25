@@ -63,10 +63,9 @@ SELECT routine_name
    AND type_udt_name = 'test_result'
    AND routine_name <> 'result';"""
 test_result = """
-SELECT NOT EXISTS(
-        SELECT 1
-          FROM unittest.result
-         WHERE result = 'fail');"""
+SELECT name
+  FROM unittest.result
+ WHERE result = 'fail';"""
 write_test_result = """
 INSERT
   INTO unittest.result (name, result)

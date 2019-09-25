@@ -39,6 +39,7 @@ python = "^3.6"
 
 psycopg2 = "^2.8"
 toml = "^0.10"
+pastel = "^0.1"
 
 [tool.poetry.dev-dependencies]
 black = {version = "*", allows-prereleases = true}
