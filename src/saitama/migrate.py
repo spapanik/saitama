@@ -14,7 +14,7 @@ MIGRATION_NAME = re.compile(
 
 
 def _canonical_args(args):
-    settings = Settings()
+    settings = Settings(args.settings)
 
     return {
         "db_options": get_db_options(args),

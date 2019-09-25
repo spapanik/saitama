@@ -10,7 +10,7 @@ def execute_script(cursor, path):
 
 def get_db_options(args):
     db_options = {}
-    settings = Settings()
+    settings = Settings(args.settings)
 
     host = args.host or os.environ.get("PGHOST") or settings.host
     if host is not None:

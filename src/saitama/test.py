@@ -9,7 +9,7 @@ from .queries import test as test_queries
 
 
 def _canonical_args(args):
-    settings = Settings()
+    settings = Settings(args.settings)
 
     db_options = get_db_options(args)
     db_options["dbname"] = f"test_{db_options['dbname']}"

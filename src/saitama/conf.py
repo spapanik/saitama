@@ -5,8 +5,11 @@ import toml
 
 
 class Settings:
-    def __init__(self):
-        self.path = os.environ.get("SAITAMA_SETTINGS")
+    def __init__(self, path=None):
+        if path is None:
+            self.path = os.environ.get("SAITAMA_SETTINGS")
+        else:
+            self.path = path
         if self.path is not None:
             self.path = pathlib.Path(self.path).absolute()
             data = toml.load(self.path)

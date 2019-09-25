@@ -11,6 +11,7 @@ def add_common_args(parser):
     parser.add_argument("-d", "--dbname", help="The postgres database")
     parser.add_argument("-u", "--user", help="The postgres user")
     parser.add_argument("-p", "--password", help="The user's password")
+    parser.add_argument("-s", "--settings", help="The path to the settings file")
 
 
 def parse_args():
