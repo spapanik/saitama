@@ -3,6 +3,14 @@ import argparse
 from . import migrate, test
 
 
+def add_common_args(parser):
+    parser.add_argument("-H", "--host", help="The postgres host")
+    parser.add_argument("-P", "--port", help="The postgres port")
+    parser.add_argument("-d", "--dbname", help="The postgres database")
+    parser.add_argument("-u", "--user", help="The postgres user")
+    parser.add_argument("-p", "--password", help="The user's password")
+
+
 def parse_args():
     parser = argparse.ArgumentParser(
         prog="punch", description="A utility to manage testing and migrating a database"
@@ -15,11 +23,7 @@ def parse_args():
         nargs="?",
         help="The target migration number. If unspecified, will migrate to latest one",
     )
-    migration_parser.add_argument("-H", "--host", help="The postgres host")
-    migration_parser.add_argument("-P", "--port", help="The postgres port")
-    migration_parser.add_argument("-d", "--dbname", help="The postgres database")
-    migration_parser.add_argument("-u", "--user", help="The postgres user")
-    migration_parser.add_argument("-p", "--password", help="The user's password")
+    add_common_args(migration_parser)
     migration_parser.add_argument(
         "-D",
         "--drop",
@@ -40,11 +44,7 @@ def parse_args():
     )
 
     test_parser = subparsers.add_parser("test", help="Test runner")
-    test_parser.add_argument("-H", "--host", help="The postgres host")
-    test_parser.add_argument("-P", "--port", help="The postgres port")
-    test_parser.add_argument("-d", "--dbname", help="The postgres database")
-    test_parser.add_argument("-u", "--user", help="The postgres user")
-    test_parser.add_argument("-p", "--password", help="The user's password")
+    add_common_args(test_parser)
     return parser.parse_args()
 
 
