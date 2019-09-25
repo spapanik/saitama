@@ -24,6 +24,9 @@ class Settings:
         )
         if not self.migrations.is_absolute():
             self.migrations = self.path.parent.joinpath(self.migrations)
+        self.tests = pathlib.Path(settings.get("tests", "tests"))
+        if not self.tests.is_absolute():
+            self.tests = self.path.parent.joinpath(self.tests)
 
     def __repr__(self):
         if self.path is None:

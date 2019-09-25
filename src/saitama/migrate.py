@@ -24,6 +24,7 @@ def _canonical_args(args):
         "backwards": args.backwards,
         "migration": args.migration,
         "migrations": settings.migrations,
+        "quiet": False,
     }
 
 
@@ -60,9 +61,7 @@ def _check_migrations(state, target, collected_migrations):
         raise LookupError("Missing migrations")
 
 
-def _valid_migrations(
-    last_migration, target_migration, migration_dir, backwards
-):
+def _valid_migrations(last_migration, target_migration, migration_dir, backwards):
     if last_migration is None:
         state = 0
     elif last_migration[1]:
@@ -101,18 +100,19 @@ def _valid_migrations(
     return collected_migrations
 
 
-def prepare_db(cursor, dbname, *, drop=False, interactive=True):
+def prepare_db(cursor, dbname, *, drop=False, interactive=True, quiet=False):
     cursor.execute(migration_queries.db_exists, {"dbname": dbname})
     exists = cursor.fetchone()[0]
     if exists and drop:
         if interactive:
             _confirm_drop()
         else:
-            print("WARNING: All data in the existing database will be lost!")
+            if not quiet:
+                print("WARNING: All data in the existing database will be lost!")
         cursor.execute(migration_queries.terminate_db, {"dbname": dbname})
         cursor.execute(migration_queries.drop_db.format(dbname=dbname))
     if not exists or drop:
-        if not exists:
+        if not exists and not quiet:
             print(f"Database {dbname} does not exist, creating...")
         cursor.execute(
             sql.SQL(migration_queries.create_db.format(dbname=dbname))
@@ -121,7 +121,7 @@ def prepare_db(cursor, dbname, *, drop=False, interactive=True):
 
 
 def migrate(
-    cursor, migrations, target_migration, *, backwards=False, fake=False
+    cursor, migrations, target_migration, *, backwards=False, fake=False, quiet=False
 ):
     cursor.execute(migration_queries.last_migration)
     last_migration = cursor.fetchone()
@@ -131,10 +131,17 @@ def migrate(
     for migration_id, file_path, name, backwards in sorted(
         (key, *value) for key, value in valid_migrations.items()
     ):
-        if fake:
-            print(f"Faking migration {migration_id}: {name}")
-        else:
-            print(f"Applying migration {migration_id}: {name}")
+        if not quiet:
+            if fake and backwards:
+                verb = "Faking removal of"
+            elif backwards:
+                verb = "Un-applying"
+            elif fake:
+                verb = "Faking"
+            else:
+                verb = "Applying"
+            print(f"{verb} migration {migration_id}: {name}")
+        if not fake:
             execute_script(cursor, file_path)
         cursor.execute(
             migration_queries.write_migration,
@@ -146,8 +153,10 @@ def migrate(
         )
 
 
-def main(args):
-    args = _canonical_args(args)
+def main(args, *, testing=False):
+    if not testing:
+        args = _canonical_args(args)
+
     db_options = args["db_options"]
     template_db_options = db_options.copy()
     template_db_options["dbname"] = "template1"
@@ -159,6 +168,7 @@ def main(args):
                 db_options["dbname"],
                 drop=args["drop"],
                 interactive=args["interactive"],
+                quiet=args["quiet"]
             )
 
     with psycopg2.connect(**db_options) as connection:
@@ -170,4 +180,5 @@ def main(args):
                 args["migration"],
                 backwards=args["backwards"],
                 fake=args["fake"],
+                quiet=args["quiet"],
             )

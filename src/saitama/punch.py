@@ -1,6 +1,6 @@
 import argparse
 
-from . import migrate
+from . import migrate, test
 
 
 def parse_args():
@@ -47,6 +47,11 @@ def parse_args():
     )
 
     test_parser = subparsers.add_parser("test", help="Test runner")
+    test_parser.add_argument("-H", "--host", help="The postgres host")
+    test_parser.add_argument("-P", "--port", help="The postgres port")
+    test_parser.add_argument("-d", "--dbname", help="The postgres database")
+    test_parser.add_argument("-u", "--user", help="The postgres user")
+    test_parser.add_argument("-p", "--password", help="The user's password")
     return parser.parse_args()
 
 
@@ -54,6 +59,8 @@ def main():
     args = parse_args()
     if args.command == "migrate":
         migrate.main(args)
+    if args.command == "test":
+        test.main(args)
 
 
 if __name__ == "__main__":
