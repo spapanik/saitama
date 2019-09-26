@@ -19,7 +19,7 @@ def parse_args():
         prog="punch", description="A utility to manage testing and migrating a database"
     )
     parser.add_argument(
-        "-v", "--version", action="store_true", help="Print the version and exit"
+        "-V", "--version", action="store_true", help="Print the version and exit"
     )
     subparsers = parser.add_subparsers(dest="command")
 
