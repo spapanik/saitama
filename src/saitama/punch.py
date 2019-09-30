@@ -59,9 +59,9 @@ def main():
     if args.version is True:
         print("Saitama", __version__)
     elif args.command == "migrate":
-        migrate.main(args)
+        migrate.Migrations(args).run()
     elif args.command == "test":
-        test.main(args)
+        test.UnitTest(args).run()
 
 
 if __name__ == "__main__":
