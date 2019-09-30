@@ -27,6 +27,7 @@ def parse_args():
     migration_parser.add_argument(
         "migration",
         nargs="?",
+        type=int,
         help="The target migration number. If unspecified, will migrate to latest one",
     )
     add_common_args(migration_parser)
