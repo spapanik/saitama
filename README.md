@@ -81,6 +81,23 @@ optional arguments:
   -s SETTINGS, --settings SETTINGS The path to the settings file
 ```
 
+### Saving state
+When saving the state of the database, saitama will create a database named `state_<dbname>`, run all the migrations to this database and write the relevant `toml` files in the directory defined in the settings.
+
+```
+usage: punch save-state [-h] [-H HOST] [-P PORT] [-d DBNAME] [-u USER]
+                        [-p PASSWORD] [-s SETTINGS]
+
+optional arguments:
+  -h, --help                       Show this help message and exit
+  -H HOST, --host HOST             The postgres host
+  -P PORT, --port PORT             The postgres port
+  -d DBNAME, --dbname DBNAME       The postgres database
+  -u USER, --user USER             The postgres user
+  -p PASSWORD, --password PASSWORD The user's password
+  -s SETTINGS, --settings SETTINGS The path to the settings file
+```
+
 ### Writing a migration
 In order to write a migration you just have to write an sql file:
 
