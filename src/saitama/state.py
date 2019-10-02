@@ -35,6 +35,7 @@ class SaveState(Connection):
         schema = self.state_options["state_dir"].joinpath("public")
         info = {
             "extensions": self._extensions(),
+            "types": self._types(),
         }
         for name, output in info.items():
             path = schema.joinpath(name).with_suffix(".toml")
@@ -52,3 +53,6 @@ class SaveState(Connection):
 
     def _extensions(self):
         return self._create_info_dict(state_queries.extensions)
+
+    def _types(self):
+        return self._create_info_dict(state_queries.types)
