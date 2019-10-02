@@ -28,6 +28,9 @@ class Settings:
         self.tests = pathlib.Path(settings.get("tests", "tests"))
         if not self.tests.is_absolute():
             self.tests = self.path.parent.joinpath(self.tests)
+        self.state = pathlib.Path(settings.get("state", "state"))
+        if not self.state.is_absolute():
+            self.state = self.path.parent.joinpath(self.state)
 
     def __repr__(self):
         if self.path is None:

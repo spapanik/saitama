@@ -1,6 +1,6 @@
 import argparse
 
-from . import migrate, test
+from . import migrate, state, test
 
 __version__ = "0.3.1"
 
@@ -52,6 +52,9 @@ def parse_args():
 
     test_parser = subparsers.add_parser("test", help="Test runner")
     add_common_args(test_parser)
+
+    state_parser = subparsers.add_parser("save-state", help="Test runner")
+    add_common_args(state_parser)
     return parser.parse_args()
 
 
@@ -63,6 +66,8 @@ def main():
         migrate.Migrations(args).run()
     elif args.command == "test":
         test.UnitTest(args).run()
+    elif args.command == "save-state":
+        state.SaveState(args).run()
 
 
 if __name__ == "__main__":
