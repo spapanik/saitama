@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - add save-state
 - add extensions to save-state
 - add types to save-state
+- add functions to save-state
 
 ## [0.3.1] - 2019-09-30
 ### Added
