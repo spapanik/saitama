@@ -1,8 +1,6 @@
 import argparse
 
-from . import migrate, test
-
-__version__ = "0.3.1"
+from . import migrate, test, __version__
 
 
 def add_common_args(parser):
