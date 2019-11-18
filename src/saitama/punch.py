@@ -14,7 +14,7 @@ def add_common_args(parser):
     parser.add_argument("-s", "--settings", help="The path to the settings file")
 
 
-def parse_args():
+def get_parser():
     parser = argparse.ArgumentParser(
         prog="punch", description="A utility to manage testing and migrating a database"
     )
@@ -52,11 +52,11 @@ def parse_args():
 
     test_parser = subparsers.add_parser("test", help="Test runner")
     add_common_args(test_parser)
-    return parser.parse_args()
+    return parser
 
 
 def main():
-    args = parse_args()
+    args = get_parser().parse_args()
     if args.version is True:
         print("Saitama", __version__)
     elif args.command == "migrate":
