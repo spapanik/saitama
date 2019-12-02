@@ -1,6 +1,6 @@
 import argparse
 
-from . import migrate, test, __version__
+from saitama import __version__, migrate, test
 
 
 def add_common_args(parser):

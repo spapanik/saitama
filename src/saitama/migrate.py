@@ -3,8 +3,8 @@ import sys
 
 from psycopg2 import sql
 
-from .common import Connection
-from .queries import migration as migration_queries
+from saitama.common import Connection
+from saitama.queries import migration as migration_queries
 
 
 class Migrations(Connection):

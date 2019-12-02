@@ -1,5 +1,3 @@
-import argparse
-import pytest
 from saitama import punch
 
 

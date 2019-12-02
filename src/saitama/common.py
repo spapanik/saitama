@@ -2,7 +2,7 @@ import os
 
 import psycopg2
 
-from .conf import Settings
+from saitama.conf import Settings
 
 
 class Connection:

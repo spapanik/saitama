@@ -2,9 +2,9 @@ import sys
 
 import pastel
 
-from .common import Connection
-from .migrate import Migrations
-from .queries import test as test_queries
+from saitama.common import Connection
+from saitama.migrate import Migrations
+from saitama.queries import test as test_queries
 
 
 class UnitTest(Connection):
