@@ -17,7 +17,11 @@ def get_parser():
         prog="punch", description="A utility to manage testing and migrating a database"
     )
     parser.add_argument(
-        "-V", "--version", action="store_true", help="Print the version and exit"
+        "-V",
+        "--version",
+        action="version",
+        version=f"%(prog)s {__version__}",
+        help="Print the version and exit",
     )
     subparsers = parser.add_subparsers(dest="command")
 

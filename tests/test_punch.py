@@ -20,7 +20,6 @@ class TestParser:
         assert args.port is None
         assert args.settings is None
         assert args.user is None
-        assert args.version is False
         assert args.yes is False
 
     def test_test_defaults(self):
@@ -33,9 +32,3 @@ class TestParser:
         assert args.port is None
         assert args.settings is None
         assert args.user is None
-        assert args.version is False
-
-    def test_version(self):
-        parser = self.parser
-        args = parser.parse_args(["--version"])
-        assert args.version is True
