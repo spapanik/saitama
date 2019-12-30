@@ -47,7 +47,7 @@ toml = "^0.10"
 pastel = "^0.1"
 
 [tool.poetry.dev-dependencies]
-black = {version = "*", allows-prereleases = true}
+black = {version = "*", allow-prereleases = true}
 isort = "^4.3"
 
 pytest = "^5.1"
