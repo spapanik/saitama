@@ -1,15 +1,17 @@
 language: python
 
 python:
+  - "3.6"
   - "3.7"
   - "3.8"
 
 install:
   - "pip install poetry"
-  - "make requirements.txt"
+  - "pip install yamk"
+  - "yam"
 
 script:
-  - "make tests"
+  - "yamk tests"
 
 after_success:
   - coveralls
