@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.4.0] - 2020-02-26
+### Removed
+- remove a dependency
+
 ## [0.3.1] - 2019-09-30
 ### Added
 - configurable settings path
