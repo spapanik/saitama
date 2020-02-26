@@ -59,9 +59,7 @@ def get_parser():
 
 def main():
     args = get_parser().parse_args()
-    if args.version is True:
-        print("Saitama", __version__)
-    elif args.command == "migrate":
+    if args.command == "migrate":
         migrate.Migrations(args).run()
     elif args.command == "test":
         test.UnitTest(args).run()
