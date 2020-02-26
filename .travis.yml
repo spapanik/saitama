@@ -6,10 +6,9 @@ python:
   - "3.8"
 
 install:
-  - "pip install --upgrade pip"
-  - "pip install --upgrade poetry"
-  - "pip install --upgrade yamk"
-  - "yamk"
+  - "pip install poetry"
+  - "pip install yamk"
+  - "yam"
 
 script:
   - "yamk tests"
