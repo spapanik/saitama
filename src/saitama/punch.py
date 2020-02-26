@@ -63,11 +63,3 @@ def main():
         migrate.Migrations(args).run()
     elif args.command == "test":
         test.UnitTest(args).run()
-
-
-def run():
-    if __name__ == "__main__":
-        main()
-
-
-run()
