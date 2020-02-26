@@ -1,10 +1,16 @@
 import sys
 
-import pastel
-
 from saitama.common import Connection
 from saitama.migrate import Migrations
 from saitama.queries import test as test_queries
+
+
+class ANSIEscape:
+    ENDC = "\033[0m"
+    FAIL = "\033[31m"
+    OKGREEN = "\033[32m"
+    OKBLUE = "\033[34m"
+    WARNING = "\033[33m"
 
 
 class UnitTest(Connection):
@@ -30,11 +36,12 @@ class UnitTest(Connection):
 
         if failed_tests:
             print(
-                pastel.colorize("<fg=red>The following tests failed:</>"), end="\n * "
+                f"{ANSIEscape.FAIL}The following tests failed:{ANSIEscape.ENDC}",
+                end="\n * ",
             )
             print("\n * ".join(test_name for test_name, *_ in failed_tests))
             sys.exit(1)
-        print(pastel.colorize("<fg=green>All tests passed!</>"))
+        print(f"{ANSIEscape.OKGREEN}All tests passed!{ANSIEscape.ENDC}")
 
     def _test_args(self):
         return {"test_dir": self._settings.tests}
@@ -53,9 +60,9 @@ class UnitTest(Connection):
         self.cursor.execute(test_queries.run_single_test.format(test_name=test_name))
         result = self.cursor.fetchone()[0]
         if result == "pass":
-            print(pastel.colorize("<fg=green>🗸</>"))
+            print(f"{ANSIEscape.OKGREEN}🗸{ANSIEscape.ENDC}")
         else:
-            print(pastel.colorize("<fg=red>✗</>"))
+            print(f"{ANSIEscape.FAIL}✗{ANSIEscape.ENDC}")
         self.cursor.execute(
             test_queries.write_test_result, {"name": test_name, "result": result}
         )
