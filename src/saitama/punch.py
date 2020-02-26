@@ -67,5 +67,9 @@ def main():
         test.UnitTest(args).run()
 
 
-if __name__ == "__main__":
-    main()
+def run():
+    if __name__ == "__main__":
+        main()
+
+
+run()
