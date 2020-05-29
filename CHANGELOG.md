@@ -7,28 +7,28 @@ The format is based on [Keep a Changelog][clog], and this project adheres to [Se
 
 ## [0.4.0] - 2020-02-26
 ### Removed
-- remove a dependency
+- Removed the pastel dependency
 
 ## [0.3.1] - 2019-09-30
 ### Added
-- configurable settings path
-- test by test result
+- Made the settings path configurable
+- Made the report of the test results more fine-grained
 
 ## [0.3.0] - 2019-09-24
 ### Added
-- database tests
+- Added database tests
 
 ## [0.2.1] - 2019-09-24
 ### Fixed
-- connection issue
+- Fixed a connection issue
 
 ## [0.2.0] - 2019-09-24
 ### Added
-- database migrations
+- Added database migrations
 
 ## [0.1.0] - 2019-09-18
 ### Added
-- initial project structure
+- Added the initial project structure
 
 
 [unreleased]: https://github.com/spapanik/saitama/compare/v0.4.0...master
