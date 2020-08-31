@@ -27,7 +27,7 @@ include = ["CHANGELOG.md"]
 repository = "https://github.com/spapanik/saitama"
 
 keywords = ["unit"]
-classifiers=[
+classifiers = [
     "Development Status :: 3 - Alpha",
     "Operating System :: OS Independent",
     "Intended Audience :: Developers",
