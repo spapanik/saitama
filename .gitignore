@@ -1,7 +1,16 @@
-# python
+# cache
 __pycache__/
+.pytest_cache/
+
+# tests
+.coverage
+htmlcov/
+
+# installation artifacts
+.yamk/
 requirements.txt
 
-# build
+# Distribution / packaging
+pip-wheel-metadata/
 dist/
 *.egg-info/
