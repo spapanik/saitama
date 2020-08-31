@@ -41,7 +41,7 @@ punch = "saitama.punch:main"
 python = "^3.6.0"
 
 psycopg2 = "^2.8.0"
-toml = "^0.10.0"
+tomlkit = "^0.7.0"
 
 [tool.poetry.dev-dependencies]
 black = {version = "*", allow-prereleases = true}
