@@ -15,7 +15,9 @@ CREATE TABLE IF NOT EXISTS unittest.result (
 );"""
 reset_assertions = "TRUNCATE TABLE unittest.assertion;"
 create_assert_function = """
-CREATE OR REPLACE FUNCTION unittest.assert(expression BOOL, message TEXT DEFAULT 'Assertion failed')
+CREATE OR REPLACE FUNCTION unittest.assert(
+        expression BOOL,
+           message TEXT DEFAULT 'Assertion failed')
     RETURNS VOID
     LANGUAGE plpgsql
 AS
