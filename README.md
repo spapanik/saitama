@@ -1,6 +1,6 @@
 <p align="center">
-<a href="https://travis-ci.org/spapanik/saitama"><img alt="Build" src="https://travis-ci.org/spapanik/saitama.svg?branch=master"></a>
-<a href="https://coveralls.io/github/spapanik/saitama"><img alt="Coverage" src="https://coveralls.io/repos/github/spapanik/saitama/badge.svg?branch=master"></a>
+<a href="https://github.com/spapanik/saitama/actions/workflows/build.yml"><img alt="Build" src="https://github.com/spapanik/saitama/actions/workflows/build.yml/badge.svg"></a>
+<a href="https://lgtm.com/projects/g/spapanik/saitama/alerts/"><img alt="Total alerts" src="https://img.shields.io/lgtm/alerts/g/spapanik/saitama.svg"/></a>
 <a href="https://github.com/spapanik/saitama/blob/master/LICENSE.txt"><img alt="License" src="https://img.shields.io/github/license/spapanik/saitama"></a>
 <a href="https://pypi.org/project/saitama"><img alt="PyPI" src="https://img.shields.io/pypi/v/saitama"></a>
 <a href="https://pepy.tech/project/saitama"><img alt="Downloads" src="https://pepy.tech/badge/saitama"></a>
