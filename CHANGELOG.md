@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog][clog], and this project adheres to [Se
 
 ## [Unreleased]
 
+### Added
+- Added python310 support
+
 ## [0.4.0] - 2020-02-26
 ### Removed
 - Removed the pastel dependency
