@@ -61,6 +61,7 @@ isort = "^5.10.0"
 mypy = "^0.930"
 
 pytest = "^6.2.0"
+types-toml = "^0.10.0"
 
 sphinx = "^4.3.0"
 sphinx-rtd-theme = "^1.0.0"
