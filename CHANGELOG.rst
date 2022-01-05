@@ -9,6 +9,9 @@ The format is based on `Keep a Changelog`_, and this project adheres to `Semanti
 `Unreleased`_
 -------------
 
+`0.5.0`_ - 2022-01-05
+---------------------
+
 Added
 ^^^^^
 * Added python310 support
@@ -61,7 +64,8 @@ Added
 * Added the initial project structure
 
 
-.. _`unreleased`: https://github.com/spapanik/saitama/compare/v0.4.0...master
+.. _`unreleased`: https://github.com/spapanik/saitama/compare/v0.5.0...master
+.. _`0.4.0`: https://github.com/spapanik/saitama/compare/v0.4.0...v0.5.0
 .. _`0.4.0`: https://github.com/spapanik/saitama/compare/v0.3.1...v0.4.0
 .. _`0.3.1`: https://github.com/spapanik/saitama/compare/v0.3.0...v0.3.1
 .. _`0.3.0`: https://github.com/spapanik/saitama/compare/v0.2.1...v0.3.0
