@@ -1,7 +1,7 @@
 import os
 import pathlib
 
-import toml
+import tomli
 
 
 class Settings:
@@ -12,7 +12,8 @@ class Settings:
             self.path = path
         if self.path is not None:
             self.path = pathlib.Path(self.path).absolute()
-            data = toml.load(self.path)
+            with open(self.path, "rb") as file:
+                data = tomli.load(file)
             settings = data.get("tool", {}).get("saitama", {})
         else:
             self.path = pathlib.Path(".").absolute()
