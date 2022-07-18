@@ -1,23 +1,19 @@
 import os
 import pathlib
+from typing import Union
 
 import tomli
 
 
 class Settings:
-    def __init__(self, path=None):
-        if path is None:
-            self.path = os.environ.get("SAITAMA_SETTINGS")
-        else:
-            self.path = path
-        if self.path is not None:
-            self.path = pathlib.Path(self.path).absolute()
+    def __init__(self, path: Union[str, pathlib.Path] = None):
+        path = path or os.environ.get("SAITAMA_SETTINGS") or "."
+        self.path = pathlib.Path(path).absolute()
+        settings = {}
+        if self.path.is_file():
             with open(self.path, "rb") as file:
                 data = tomli.load(file)
             settings = data.get("tool", {}).get("saitama", {})
-        else:
-            self.path = pathlib.Path(".").absolute()
-            settings = {}
         self.host = settings.get("host")
         self.port = settings.get("port")
         self.dbname = settings.get("dbname")
@@ -31,7 +27,4 @@ class Settings:
             self.tests = self.path.parent.joinpath(self.tests)
 
     def __repr__(self):
-        if self.path is None:
-            return "default settings"
-
-        return f"settings@{self.path}"
+        return f"settings@{self.path}" if self.path.is_file() else "default settings"

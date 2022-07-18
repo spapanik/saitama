@@ -62,11 +62,11 @@ class Migrations(Connection):
     def _confirm_drop():
         print("WARNING: All data in the existing database will be lost!")
         while True:
-            confirmation = input("Are you sure you want to continue? [y/N] ")
-            if confirmation.lower() in ["y", "yes"]:
+            raw_confirmation = input("Are you sure you want to continue? [y/N] ")
+            if raw_confirmation.lower() in ["y", "yes"]:
                 confirmation = True
                 break
-            if confirmation.lower() in ["n", "no", ""]:
+            if raw_confirmation.lower() in ["n", "no", ""]:
                 confirmation = False
                 break
         if not confirmation:
