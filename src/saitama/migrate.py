@@ -82,9 +82,8 @@ class Migrations(Connection):
         if exists and drop:
             if self.migration_options["interactive"]:
                 self._confirm_drop()
-            else:
-                if not quiet:
-                    print("WARNING: All data in the existing database will be lost!")
+            elif not quiet:
+                print("WARNING: All data in the existing database will be lost!")
             self.cursor.execute(migration_queries.terminate_db, {"dbname": dbname})
             self.cursor.execute(migration_queries.drop_db.format(dbname=dbname))
         if not exists or drop:
