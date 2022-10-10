@@ -15,7 +15,7 @@ Added
 
 Changed
 ^^^^^^^
-* Change toml parser to tomli
+* Use dj_settings to parse the settings
 
 Removed
 ^^^^^^^

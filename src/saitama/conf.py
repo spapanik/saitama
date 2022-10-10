@@ -2,7 +2,7 @@ import os
 import pathlib
 from typing import Union
 
-import tomli
+from dj_settings import SettingsParser
 
 
 class Settings:
@@ -11,8 +11,7 @@ class Settings:
         self.path = pathlib.Path(path).absolute()
         settings = {}
         if self.path.exists():
-            with open(self.path, "rb") as file:
-                data = tomli.load(file)
+            data = SettingsParser(self.path).data
             settings = data.get("tool", {}).get("saitama", {})
         self.host = settings.get("host")
         self.port = settings.get("port")
