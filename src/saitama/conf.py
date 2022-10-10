@@ -7,10 +7,10 @@ import tomli
 
 class Settings:
     def __init__(self, path: Union[str, pathlib.Path] = None):
-        path = path or os.environ.get("SAITAMA_SETTINGS") or "."
+        path = path or os.environ.get("SAITAMA_SETTINGS") or "./saitama.toml"
         self.path = pathlib.Path(path).absolute()
         settings = {}
-        if self.path.is_file():
+        if self.path.exists():
             with open(self.path, "rb") as file:
                 data = tomli.load(file)
             settings = data.get("tool", {}).get("saitama", {})
@@ -27,4 +27,4 @@ class Settings:
             self.tests = self.path.parent.joinpath(self.tests)
 
     def __repr__(self):
-        return f"settings@{self.path}" if self.path.is_file() else "default settings"
+        return f"settings@{self.path}" if self.path.exists() else "default settings"
