@@ -1,12 +1,13 @@
+from __future__ import annotations
+
 import os
 import pathlib
-from typing import Union
 
 from dj_settings import SettingsParser
 
 
 class Settings:
-    def __init__(self, path: Union[str, pathlib.Path] = None):
+    def __init__(self, path: str | pathlib.Path | None = None):
         path = path or os.environ.get("SAITAMA_SETTINGS") or "./saitama.toml"
         self.path = pathlib.Path(path).absolute()
         settings = {}

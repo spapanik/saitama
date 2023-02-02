@@ -5,9 +5,6 @@ saitama: pure postgres unit-testing
 .. image:: https://github.com/spapanik/saitama/actions/workflows/build.yml/badge.svg
   :alt: Build
   :target: https://github.com/spapanik/saitama/actions/workflows/build.yml
-.. image:: https://img.shields.io/lgtm/alerts/g/spapanik/saitama.svg
-  :alt: Total alerts
-  :target: https://lgtm.com/projects/g/spapanik/saitama/alerts/
 .. image:: https://img.shields.io/github/license/spapanik/saitama
   :alt: License
   :target: https://github.com/spapanik/saitama/blob/main/LICENSE.txt

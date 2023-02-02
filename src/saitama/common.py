@@ -1,6 +1,7 @@
 import os
 
 import psycopg2
+from psycopg2.extensions import cursor as cursor_type
 
 from saitama.conf import Settings
 
@@ -8,12 +9,13 @@ from saitama.conf import Settings
 class Connection:
     __slots__ = ["_settings", "_cli_args", "_prepend", "cursor", "db_options"]
 
+    cursor: cursor_type
+
     def __init__(self, cli_args, prepend=None, **kwargs):
         self._cli_args = cli_args
         self._settings = Settings(cli_args.settings)
         self._prepend = prepend
         self.db_options = self._get_db_options()
-        self.cursor = None
 
     def execute_script(self, path):
         with open(path) as file:
