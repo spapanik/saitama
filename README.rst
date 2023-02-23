@@ -2,9 +2,9 @@
 saitama: pure postgres unit-testing
 ===================================
 
-.. image:: https://github.com/spapanik/saitama/actions/workflows/build.yml/badge.svg
-  :alt: Build
-  :target: https://github.com/spapanik/saitama/actions/workflows/build.yml
+.. image:: https://github.com/spapanik/saitama/actions/workflows/test.yml/badge.svg
+  :alt: Test
+  :target: https://github.com/spapanik/saitama/actions/workflows/test.yml
 .. image:: https://img.shields.io/github/license/spapanik/saitama
   :alt: License
   :target: https://github.com/spapanik/saitama/blob/main/LICENSE.txt
