@@ -2,14 +2,17 @@ from __future__ import annotations
 
 import os
 import pathlib
+from argparse import Namespace
 
 from dj_settings import SettingsParser
 
 
 class Settings:
-    def __init__(self, path: str | pathlib.Path | None = None):
-        path = path or os.environ.get("SAITAMA_SETTINGS") or "./saitama.toml"
-        self.path = pathlib.Path(path).absolute()
+    def __init__(self, args: Namespace):
+        pathname = (
+            args.settings or os.environ.get("SAITAMA_SETTINGS") or "./saitama.toml"
+        )
+        self.path = pathlib.Path(pathname)
         settings = {}
         if self.path.exists():
             data = SettingsParser(self.path).data
@@ -26,5 +29,5 @@ class Settings:
         if not self.tests.is_absolute():
             self.tests = self.path.parent.joinpath(self.tests)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"settings@{self.path}" if self.path.exists() else "default settings"

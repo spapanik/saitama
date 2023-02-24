@@ -1,29 +1,50 @@
+from __future__ import annotations
+
 import os
+import pathlib
+from argparse import Namespace
+from dataclasses import asdict, dataclass
+from typing import Any, Callable
 
 import psycopg
 
 from saitama.conf import Settings
 
 
+@dataclass
+class DBOptions:
+    host: str | None
+    port: int | None
+    password: str | None
+    user: str | None
+    dbname: str
+
+
 class Connection:
     __slots__ = ["_settings", "_cli_args", "_prepend", "cursor", "db_options"]
 
-    def __init__(self, cli_args, prepend=None, **kwargs):
+    def __init__(
+        self, cli_args: Namespace, prepend: str | None = None, *, testing: bool = False
+    ):
         self._cli_args = cli_args
-        self._settings = Settings(cli_args.settings)
+        self._settings = Settings(cli_args)
         self._prepend = prepend
         self.db_options = self._get_db_options()
 
-    def execute_script(self, path):
-        with open(path) as file:
+    def execute_script(self, path: pathlib.Path) -> None:
+        with path.open() as file:
             self.cursor.execute(file.read())
 
-    def _run_commands(self, *commands, get_output=False, dbname=None, autocommit=False):
+    def _run_commands(
+        self,
+        *commands: Callable[[], None],
+        get_output: bool = False,
+        dbname: str | None = None,
+        autocommit: bool = False,
+    ) -> list[dict[str, Any]] | None:
+        db_options = asdict(self.db_options)
         if dbname is not None:
-            db_options = self.db_options.copy()
             db_options["dbname"] = dbname
-        else:
-            db_options = self.db_options
 
         with psycopg.connect(**db_options) as connection:
             if autocommit:
@@ -32,37 +53,21 @@ class Connection:
                 self.cursor = cursor
                 for command in commands:
                     command()
-                if get_output:
-                    return self.cursor.fetchall()
-                return None
+                return self.cursor.fetchall() if get_output else None
 
-    def _get_db_options(self):
+    def _get_db_options(self) -> DBOptions:
         cli_args = self._cli_args
-        db_options = {}
-
         host = cli_args.host or os.environ.get("PGHOST") or self._settings.host
-        if host is not None:
-            db_options["host"] = host
-
         port = cli_args.port or os.environ.get("PGPORT") or self._settings.port
-        if port is not None:
-            db_options["port"] = port
-
         user = (
             cli_args.user
             or os.environ.get("PGUSER")
             or os.environ.get("USER")
             or self._settings.user
         )
-        if user is not None:
-            db_options["user"] = user
-
         password = (
             cli_args.password or os.environ.get("PGPASSWORD") or self._settings.password
         )
-        if password is not None:
-            db_options["password"] = password
-
         dbname = (
             cli_args.dbname
             or os.environ.get("PGDATABASE")
@@ -73,6 +78,11 @@ class Connection:
             raise ConnectionError("No database specified")
         if self._prepend:
             dbname = f"{self._prepend}_{dbname}"
-        db_options["dbname"] = dbname
 
-        return db_options
+        return DBOptions(
+            host=host,
+            port=port if port is None else int(port),
+            user=user,
+            password=password,
+            dbname=dbname,
+        )

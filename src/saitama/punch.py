@@ -3,7 +3,7 @@ import argparse
 from saitama import __version__, migrate, test
 
 
-def add_common_args(parser):
+def add_common_args(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("-H", "--host", help="The postgres host")
     parser.add_argument("-P", "--port", help="The postgres port")
     parser.add_argument("-d", "--dbname", help="The postgres database")
@@ -12,7 +12,7 @@ def add_common_args(parser):
     parser.add_argument("-s", "--settings", help="The path to the settings file")
 
 
-def get_parser():
+def get_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="punch", description="A utility to manage testing and migrating a database"
     )
@@ -57,7 +57,7 @@ def get_parser():
     return parser
 
 
-def main():
+def main() -> None:
     args = get_parser().parse_args()
     if args.command == "migrate":
         migrate.Migrations(args).run()
