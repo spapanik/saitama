@@ -21,6 +21,10 @@ Removed
 ^^^^^^^
 * Removed changelog from the published wheel
 
+Changed
+^^^^^^^
+* Swap psycopg2 for psycopg
+
 `0.5.0`_ - 2022-01-05
 ---------------------
 

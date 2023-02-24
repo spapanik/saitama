@@ -1,7 +1,7 @@
 import re
 import sys
 
-from psycopg2 import sql
+from psycopg import sql
 
 from saitama.common import Connection
 from saitama.queries import migration as migration_queries

@@ -1,15 +1,12 @@
 import os
 
-import psycopg2
-from psycopg2.extensions import cursor as cursor_type
+import psycopg
 
 from saitama.conf import Settings
 
 
 class Connection:
     __slots__ = ["_settings", "_cli_args", "_prepend", "cursor", "db_options"]
-
-    cursor: cursor_type
 
     def __init__(self, cli_args, prepend=None, **kwargs):
         self._cli_args = cli_args
@@ -28,7 +25,7 @@ class Connection:
         else:
             db_options = self.db_options
 
-        with psycopg2.connect(**db_options) as connection:
+        with psycopg.connect(**db_options) as connection:
             if autocommit:
                 connection.autocommit = True
             with connection.cursor() as cursor:

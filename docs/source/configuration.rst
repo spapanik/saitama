@@ -15,6 +15,6 @@ To configure saitama for your project, you can use any toml file.
     tests = "<path to tests dir>"
 
 All of settings are optional, and the default ``host``, ``port``, ``dbname``, ``user`` and ``password``
-are the ones specified by ``psycopg2``, the default migrations directory is ``migrations/``,
+are the ones specified by ``psycopg``, the default migrations directory is ``migrations/``,
 relative to the parent directory of the toml file,
 and the default test directory is ``tests/``, again relative to the toml file.
