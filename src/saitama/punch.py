@@ -12,7 +12,7 @@ def add_common_args(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("-s", "--settings", help="The path to the settings file")
 
 
-def get_parser() -> argparse.ArgumentParser:
+def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         prog="punch", description="A utility to manage testing and migrating a database"
     )
@@ -54,11 +54,11 @@ def get_parser() -> argparse.ArgumentParser:
 
     test_parser = subparsers.add_parser("test", help="Test runner")
     add_common_args(test_parser)
-    return parser
+    return parser.parse_args()
 
 
 def main() -> None:
-    args = get_parser().parse_args()
+    args = parse_args()
     if args.command == "migrate":
         migrate.Migrations(args).run()
     elif args.command == "test":
