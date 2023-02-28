@@ -75,7 +75,7 @@ class UnitTest(Connection):
             raise RuntimeError("Test isn't a valid sql file.")
         result = response[0]
         if result == "pass":
-            print(f"{ANSIEscape.OKGREEN}🗸{ANSIEscape.ENDC}")
+            print(f"{ANSIEscape.OKGREEN}✓{ANSIEscape.ENDC}")
         else:
             print(f"{ANSIEscape.FAIL}✗{ANSIEscape.ENDC}")
         self.cursor.execute(
