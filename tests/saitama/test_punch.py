@@ -1,14 +1,16 @@
+from unittest import mock
+
 from saitama import punch
 
 
 class TestParser:
     @property
-    def parser(self):
-        return punch.get_parser()
+    def parsed_args(self):
+        return punch.parse_args()
 
+    @mock.patch("sys.argv", ["punch", "migrate"])
     def test_migration_defaults(self):
-        parser = self.parser
-        args = parser.parse_args(["migrate"])
+        args = self.parsed_args
         assert args.backwards is False
         assert args.command == "migrate"
         assert args.dbname is None
@@ -22,9 +24,9 @@ class TestParser:
         assert args.user is None
         assert args.yes is False
 
+    @mock.patch("sys.argv", ["punch", "test"])
     def test_test_defaults(self):
-        parser = self.parser
-        args = parser.parse_args(["test"])
+        args = self.parsed_args
         assert args.command == "test"
         assert args.dbname is None
         assert args.host is None
