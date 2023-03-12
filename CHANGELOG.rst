@@ -16,6 +16,7 @@ Added
 Changed
 ^^^^^^^
 * Use dj_settings to parse the settings
+* Dropped python 3.7 support
 
 Removed
 ^^^^^^^

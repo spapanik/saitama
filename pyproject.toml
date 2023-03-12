@@ -107,7 +107,7 @@ punch = "saitama.punch:main"
 
 [tool.poetry.dependencies]
 # python version
-python = "^3.7"
+python = "^3.8"
 
 # dependencies
 dj_settings = "^4.0"
