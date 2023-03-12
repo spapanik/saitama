@@ -2,9 +2,9 @@
 saitama: pure postgres unit-testing
 ===================================
 
-.. image:: https://github.com/spapanik/saitama/actions/workflows/test.yml/badge.svg
-  :alt: Test
-  :target: https://github.com/spapanik/saitama/actions/workflows/test.yml
+.. image:: https://github.com/spapanik/saitama/actions/workflows/tests.yml/badge.svg
+  :alt: Tests
+  :target: https://github.com/spapanik/saitama/actions/workflows/tests.yml
 .. image:: https://img.shields.io/github/license/spapanik/saitama
   :alt: License
   :target: https://github.com/spapanik/saitama/blob/main/LICENSE.txt
@@ -15,8 +15,14 @@ saitama: pure postgres unit-testing
   :alt: Downloads
   :target: https://pepy.tech/project/saitama
 .. image:: https://img.shields.io/badge/code%20style-black-000000.svg
-  :alt: Code style
+  :alt: code style: black
   :target: https://github.com/psf/black
+.. image:: https://img.shields.io/badge/build%20automation-yamk-success
+  :alt: build automation: yam
+  :target: https://github.com/spapanik/yamk
+.. image:: https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/charliermarsh/ruff/main/assets/badge/v1.json
+  :alt: Lint: ruff
+  :target: https://github.com/charliermarsh/ruff
 
 ``saitama`` is offering a way to write unittest and migrations in pure postgres.
 
