@@ -24,7 +24,11 @@ class Connection:
     __slots__ = ["_settings", "_cli_args", "_prepend", "cursor", "db_options"]
 
     def __init__(
-        self, cli_args: Namespace, prepend: str | None = None, *, testing: bool = False
+        self,
+        cli_args: Namespace,
+        prepend: str | None = None,
+        *,
+        testing: bool = False,  # noqa: ARG002
     ):
         self._cli_args = cli_args
         self._settings = Settings(cli_args)
