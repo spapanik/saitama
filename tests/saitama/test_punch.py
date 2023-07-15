@@ -1,3 +1,4 @@
+from argparse import Namespace
 from unittest import mock
 
 from saitama import punch
@@ -5,11 +6,11 @@ from saitama import punch
 
 class TestParser:
     @property
-    def parsed_args(self):
+    def parsed_args(self) -> Namespace:
         return punch.parse_args()
 
     @mock.patch("sys.argv", ["punch", "migrate"])
-    def test_migration_defaults(self):
+    def test_migration_defaults(self) -> None:
         args = self.parsed_args
         assert args.backwards is False
         assert args.command == "migrate"
@@ -25,7 +26,7 @@ class TestParser:
         assert args.yes is False
 
     @mock.patch("sys.argv", ["punch", "test"])
-    def test_test_defaults(self):
+    def test_test_defaults(self) -> None:
         args = self.parsed_args
         assert args.command == "test"
         assert args.dbname is None
