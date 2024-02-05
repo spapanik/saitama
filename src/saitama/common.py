@@ -79,7 +79,8 @@ class Connection:
             or user
         )
         if dbname is None:
-            raise ConnectionError("No database specified")
+            msg = "No database specified"
+            raise ConnectionError(msg)
         if self._prepend:
             dbname = f"{self._prepend}_{dbname}"
 

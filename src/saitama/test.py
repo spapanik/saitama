@@ -74,7 +74,8 @@ class UnitTest(Connection):
         self.cursor.execute(test_queries.run_single_test.format(test_name=test_name))
         response = self.cursor.fetchone()
         if response is None:
-            raise RuntimeError("Test isn't a valid sql file.")
+            msg = "Test isn't a valid sql file."
+            raise RuntimeError(msg)
         result = response[0]
         if result == "pass":
             print(f"{ANSIEscape.OKGREEN}✓{ANSIEscape.ENDC}")

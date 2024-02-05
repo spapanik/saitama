@@ -95,7 +95,8 @@ class Migrations(Connection):
                 confirmation = False
                 break
         if not confirmation:
-            raise RuntimeError("Migrations cancelled by the user")
+            msg = "Migrations cancelled by the user"
+            raise RuntimeError(msg)
 
     def _prepare_db(self) -> None:
         dbname = self.db_options.dbname
@@ -105,7 +106,8 @@ class Migrations(Connection):
         self.cursor.execute(migration_queries.db_exists, {"dbname": dbname})
         response = self.cursor.fetchone()
         if response is None:
-            raise RuntimeError("Failed to check if db exists.")
+            msg = "Failed to check if db exists."
+            raise RuntimeError(msg)
         exists = response[0]
         if exists and drop:
             if self.migration_options.interactive:
@@ -131,7 +133,8 @@ class Migrations(Connection):
         start = keys[0]
         end = keys[-1]
         if start != state + 1 or end != target or end - start + 1 != target - state:
-            raise LookupError("Missing migrations")
+            msg = "Missing migrations"
+            raise LookupError(msg)
 
     def _valid_migrations(
         self, last_migration: tuple[int, bool] | None
@@ -154,7 +157,8 @@ class Migrations(Connection):
         for file in self.migration_options.migration_dir.iterdir():
             match = re.match(self.migration_name, file.name)
             if match is None:
-                raise ValueError("Migration violates naming scheme")
+                msg = "Migration violates naming scheme"
+                raise ValueError(msg)
             backward_migration = match["backwards"] is not None
             if backward_migration ^ backwards:
                 continue
