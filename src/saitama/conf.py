@@ -4,7 +4,7 @@ import os
 import pathlib
 from argparse import Namespace
 
-from dj_settings import SettingsParser
+from dj_settings import ConfigParser
 
 
 class Settings:
@@ -15,7 +15,7 @@ class Settings:
         self.path = pathlib.Path(pathname)
         settings = {}
         if self.path.exists():
-            data = SettingsParser(self.path).data
+            data = ConfigParser([self.path]).data
             settings = data.get("tool", {}).get("saitama", {})
         self.host = settings.get("host")
         self.port = settings.get("port")

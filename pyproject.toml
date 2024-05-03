@@ -139,7 +139,9 @@ homepage = "https://saitama.readthedocs.io/en/stable/"
 repository = "https://github.com/spapanik/saitama"
 documentation = "https://saitama.readthedocs.io/en/stable/"
 
-keywords = ["unit"]
+keywords = [
+    "unit",
+]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Operating System :: OS Independent",
@@ -155,7 +157,7 @@ punch = "saitama.punch:main"
 python = "^3.8"
 
 # dependencies
-dj_settings = "^4.0"
+dj_settings = "^5.0"
 psycopg = "^3.0"
 
 [tool.poetry.group.dev.dependencies]
