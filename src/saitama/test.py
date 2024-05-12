@@ -5,19 +5,11 @@ import sys
 from argparse import Namespace
 from dataclasses import dataclass
 
+from pyutilkit.term import SGRCodes, SGRString
+
 from saitama.common import Connection
 from saitama.migrate import Migrations
 from saitama.queries import test as test_queries
-
-
-class ANSIEscape:
-    __slots__: list[str] = []
-
-    ENDC = "\033[0m"
-    FAIL = "\033[31m"
-    OKGREEN = "\033[32m"
-    OKBLUE = "\033[34m"
-    WARNING = "\033[33m"
 
 
 @dataclass
@@ -50,12 +42,12 @@ class UnitTest(Connection):
 
         if failed_tests:
             print(
-                f"{ANSIEscape.FAIL}The following tests failed:{ANSIEscape.ENDC}",
+                SGRString("The following tests failed:", params=[SGRCodes.RED]),
                 end="\n * ",
             )
             print("\n * ".join(test_name for test_name, *_ in failed_tests))
             sys.exit(1)
-        print(f"{ANSIEscape.OKGREEN}All tests passed!{ANSIEscape.ENDC}")
+        print(SGRString("All tests passed!", params=[SGRCodes.GREEN]))
 
     def _test_args(self) -> TestArgs:
         return TestArgs(test_dir=self._settings.tests)
@@ -78,9 +70,9 @@ class UnitTest(Connection):
             raise RuntimeError(msg)
         result = response[0]
         if result == "pass":
-            print(f"{ANSIEscape.OKGREEN}✓{ANSIEscape.ENDC}")
+            print(SGRString("✓", params=[SGRCodes.GREEN]))
         else:
-            print(f"{ANSIEscape.FAIL}✗{ANSIEscape.ENDC}")
+            print(SGRString("✗", params=[SGRCodes.RED]))
         self.cursor.execute(
             test_queries.write_test_result, {"name": test_name, "result": result}
         )
