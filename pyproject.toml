@@ -159,7 +159,7 @@ python = "^3.9"
 # dependencies
 dj_settings = "^5.0"
 psycopg = "^3.0"
-pyutilkit = "^0.1"
+pyutilkit = "^0.3"
 
 [tool.poetry.group.dev.dependencies]
 ipdb = { version = "^0.13", python = "^3.10" }
