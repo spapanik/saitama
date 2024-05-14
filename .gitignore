@@ -10,7 +10,6 @@ __pycache__/
 poetry.lock
 
 # Distribution / packaging
-docs/build/
 pip-wheel-metadata/
 dist/
 *.egg-info/

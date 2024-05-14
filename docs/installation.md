@@ -1,22 +1,35 @@
 # Installation
 
-The easiest way is to use [pipx] to install `saitama`.
+## Officially Supported Method: Using pipx
+
+We recommend using [pipx] for the installation of `saitama` as it provides
+an isolated environment for the package, preventing any dependency conflicts.
+
+To install `saitama` using pipx, run the following command in your terminal:
 
 ```console
 $ pipx install saitama
 ```
 
-This is the only officially supported way of installing it.
+## Alternative Method: Using pip
 
-Alternatively, you can install it with [pip]:
+As an alternative, you can use [pip] to install `saitama`.
+However, this method does not provide an isolated environment for the package,
+which may lead to dependency conflicts or leave your system in an inconsistent state.
+Therefore, this method is not recommended or supported.
+
+To install `saitama` using pip, run the following command in your terminal:
 
 ```console
 $ pip install --user saitama
 ```
 
-The biggest issue with this approach is that you won't have an isolated
-environment for `saitama`, therefore you might run into dependency
-conflicts, and so this is neither recommended nor supported.
+## Python Version Requirement
+
+Please note that `saitama` requires Python 3.11 or higher. Please ensure
+that your system is using the correct Python version. If not,
+consider using a tool like [pyenv] to create a shell with the required Python version.
 
 [pip]: https://pip.pypa.io/en/stable/
 [pipx]: https://pypa.github.io/pipx/
+[pyenv]: https://github.com/pyenv/pyenv
