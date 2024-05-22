@@ -150,7 +150,7 @@ classifiers = [
 ]
 
 [tool.poetry.scripts]
-punch = "saitama.punch:main"
+punch = "saitama.__main__:main"
 
 [tool.poetry.dependencies]
 # python version
