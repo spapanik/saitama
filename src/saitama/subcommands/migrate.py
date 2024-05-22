@@ -8,8 +8,8 @@ from dataclasses import dataclass
 
 from psycopg import sql
 
-from saitama.common import Connection
 from saitama.queries import migration as migration_queries
+from saitama.subcommands.common import Connection
 
 
 @dataclass

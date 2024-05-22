@@ -7,9 +7,9 @@ from dataclasses import dataclass
 
 from pyutilkit.term import SGRCodes, SGRString
 
-from saitama.common import Connection
-from saitama.migrate import Migrations
 from saitama.queries import test as test_queries
+from saitama.subcommands.common import Connection
+from saitama.subcommands.migrate import Migrations
 
 
 @dataclass

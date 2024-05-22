@@ -1,6 +1,6 @@
 from saitama.lib.parser import parse_args
-from saitama.migrate import Migrations
-from saitama.test import UnitTest
+from saitama.subcommands.migrate import Migrations
+from saitama.subcommands.test import UnitTest
 
 
 def main() -> None:

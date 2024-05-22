@@ -8,7 +8,7 @@ from typing import Any, Callable
 
 import psycopg
 
-from saitama.conf import Settings
+from saitama.lib.conf import Settings
 
 
 @dataclass
