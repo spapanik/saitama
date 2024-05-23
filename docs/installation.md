@@ -26,7 +26,7 @@ $ pip install --user saitama
 
 ## Python Version Requirement
 
-Please note that `saitama` requires Python 3.11 or higher. Please ensure
+Please note that `saitama` requires Python 3.9 or higher. Please ensure
 that your system is using the correct Python version. If not,
 consider using a tool like [pyenv] to create a shell with the required Python version.
 
