@@ -1,14 +1,16 @@
 from __future__ import annotations
 
 import os
-import pathlib
-from argparse import Namespace
 from dataclasses import asdict, dataclass
-from typing import Any, Callable
+from typing import TYPE_CHECKING, Any, Callable
 
 import psycopg
 
 from saitama.lib.conf import Settings
+
+if TYPE_CHECKING:
+    import pathlib
+    from argparse import Namespace
 
 
 @dataclass
@@ -29,7 +31,7 @@ class Connection:
         prepend: str | None = None,
         *,
         testing: bool = False,  # noqa: ARG002
-    ):
+    ) -> None:
         self._cli_args = cli_args
         self._settings = Settings(cli_args)
         self._prepend = prepend
@@ -45,7 +47,7 @@ class Connection:
         get_output: bool = False,
         dbname: str | None = None,
         autocommit: bool = False,
-    ) -> list[dict[str, Any]] | None:
+    ) -> list[tuple[Any, ...]] | None:
         db_options = asdict(self.db_options)
         if dbname is not None:
             db_options["dbname"] = dbname

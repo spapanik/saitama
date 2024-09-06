@@ -2,13 +2,16 @@ from __future__ import annotations
 
 import os
 import pathlib
-from argparse import Namespace
+from typing import TYPE_CHECKING
 
 from dj_settings import ConfigParser
 
+if TYPE_CHECKING:
+    from argparse import Namespace
+
 
 class Settings:
-    def __init__(self, args: Namespace):
+    def __init__(self, args: Namespace) -> None:
         pathname = (
             args.settings or os.environ.get("SAITAMA_SETTINGS") or "./saitama.toml"
         )

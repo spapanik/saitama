@@ -1,15 +1,18 @@
 from __future__ import annotations
 
-import pathlib
 import re
 import sys
-from argparse import Namespace
 from dataclasses import dataclass
+from typing import TYPE_CHECKING
 
 from psycopg import sql
 
 from saitama.queries import migration as migration_queries
 from saitama.subcommands.common import Connection
+
+if TYPE_CHECKING:
+    import pathlib
+    from argparse import Namespace
 
 
 @dataclass
@@ -46,7 +49,7 @@ class Migrations(Connection):
 
     def __init__(
         self, cli_args: Namespace, prepend: str | None = None, *, testing: bool = False
-    ):
+    ) -> None:
         super().__init__(cli_args, prepend, testing=testing)
         self.migration_options = self._migration_args(cli_args, testing=testing)
 

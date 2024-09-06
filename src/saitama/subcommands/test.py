@@ -1,15 +1,18 @@
 from __future__ import annotations
 
-import pathlib
 import sys
-from argparse import Namespace
 from dataclasses import dataclass
+from typing import TYPE_CHECKING
 
 from pyutilkit.term import SGRCodes, SGRString
 
 from saitama.queries import test as test_queries
 from saitama.subcommands.common import Connection
 from saitama.subcommands.migrate import Migrations
+
+if TYPE_CHECKING:
+    import pathlib
+    from argparse import Namespace
 
 
 @dataclass
@@ -29,7 +32,7 @@ class UnitTest(Connection):
 
     def __init__(
         self, cli_args: Namespace, prepend: str = "test", *, testing: bool = True
-    ):
+    ) -> None:
         super().__init__(cli_args, prepend, testing=testing)
         self.test_options = self._test_args()
 
