@@ -19,7 +19,7 @@ controls the migrations and the testing.
 
 [test_badge]: https://github.com/spapanik/saitama/actions/workflows/tests.yml/badge.svg
 [test_url]: https://github.com/spapanik/saitama/actions/workflows/tests.yml
-[licence_badge]: https://img.shields.io/badge/License-LGPL_v3-blue.svg
+[licence_badge]: https://img.shields.io/pypi/l/saitama
 [licence_url]: https://github.com/spapanik/saitama/blob/main/docs/LICENSE.md
 [pypi_badge]: https://img.shields.io/pypi/v/saitama
 [pypi_url]: https://pypi.org/project/saitama
