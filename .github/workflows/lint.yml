@@ -1,4 +1,4 @@
-name: tests
+name: lint
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  unittest-python:
+  lint-python:
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -49,7 +49,7 @@ jobs:
           "$PWD/.venv/Scripts" | Out-File -FilePath $env:GITHUB_PATH -Append
       - name: Install dependencies
         run: |
-          yam install -g main -g test
-      - name: Test the project
+          yam install -g main -g lint -g test
+      - name: Lint the project
         run: |
-          yam -e tests
+          yam -e lint
