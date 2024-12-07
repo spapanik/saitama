@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 import sys
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
@@ -22,9 +23,9 @@ class TestArgs:
 
 class UnitTest(Connection):
     __slots__ = [
-        "_settings",
         "_cli_args",
         "_prepend",
+        "_settings",
         "cursor",
         "db_options",
         "test_options",
@@ -41,16 +42,18 @@ class UnitTest(Connection):
         failed_tests = self._run_commands(
             self._prepare_db, self._run_tests, get_output=True
         )
-        print("\nTest results:")
+        SGRString(
+            "Test results:", prefix=os.linesep, is_error=bool(failed_tests)
+        ).print()
 
         if failed_tests:
-            print(
-                SGRString("The following tests failed:", params=[SGRCodes.RED]),
-                end="\n * ",
-            )
-            print("\n * ".join(test_name for test_name, *_ in failed_tests))
+            SGRString(
+                "The following tests failed:", params=[SGRCodes.RED], is_error=True
+            ).print()
+            for test_name, *_ in failed_tests:
+                SGRString(f" * {test_name}").print()
             sys.exit(1)
-        print(SGRString("All tests passed!", params=[SGRCodes.GREEN]))
+        SGRString("All tests passed!", params=[SGRCodes.GREEN]).print()
 
     def _test_args(self) -> TestArgs:
         return TestArgs(test_dir=self._settings.tests)
@@ -64,7 +67,7 @@ class UnitTest(Connection):
         self.cursor.execute(test_queries.create_result_function)
 
     def _run_single_test(self, test_name: str) -> None:
-        print(f"Running {test_name}...\t", end="")
+        SGRString(f"Running {test_name}...", suffix="\t").print()
         self.cursor.execute(test_queries.reset_assertions)
         self.cursor.execute(test_queries.run_single_test.format(test_name=test_name))
         response = self.cursor.fetchone()
@@ -73,9 +76,9 @@ class UnitTest(Connection):
             raise RuntimeError(msg)
         result = response[0]
         if result == "pass":
-            print(SGRString("✓", params=[SGRCodes.GREEN]))
+            SGRString("✓", params=[SGRCodes.GREEN]).print()
         else:
-            print(SGRString("✗", params=[SGRCodes.RED]))
+            SGRString("✗", params=[SGRCodes.RED]).print()
         self.cursor.execute(
             test_queries.write_test_result, {"name": test_name, "result": result}
         )

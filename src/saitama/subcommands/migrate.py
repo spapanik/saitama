@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
 from psycopg import sql
+from pyutilkit.term import SGRCodes, SGROutput, SGRString
 
 from saitama.queries import migration as migration_queries
 from saitama.subcommands.common import Connection
@@ -35,9 +36,9 @@ class Migration:
 
 class Migrations(Connection):
     __slots__ = [
-        "_settings",
         "_cli_args",
         "_prepend",
+        "_settings",
         "cursor",
         "db_options",
         "migration_options",
@@ -88,7 +89,12 @@ class Migrations(Connection):
 
     @staticmethod
     def _confirm_drop() -> None:
-        print("WARNING: All data in the existing database will be lost!")
+        SGROutput(
+            [
+                SGRString("WARNING: ", params=[SGRCodes.YELLOW]),
+                SGRString("All data in the existing database will be lost!"),
+            ]
+        ).print()
         while True:
             raw_confirmation = input("Are you sure you want to continue? [y/N] ")
             if raw_confirmation.lower() in ["y", "yes"]:
@@ -116,12 +122,17 @@ class Migrations(Connection):
             if self.migration_options.interactive:
                 self._confirm_drop()
             elif not quiet:
-                print("WARNING: All data in the existing database will be lost!")
+                SGROutput(
+                    [
+                        SGRString("WARNING: ", params=[SGRCodes.RED]),
+                        SGRString("All data in the existing database will be lost!"),
+                    ]
+                ).print()
             self.cursor.execute(migration_queries.terminate_db, {"dbname": dbname})
             self.cursor.execute(migration_queries.drop_db.format(dbname=dbname))
         if not exists or drop:
             if not exists and not quiet:
-                print(f"Database {dbname} does not exist, creating...")
+                SGRString(f"Database {dbname} does not exist, creating...").print()
             self.cursor.execute(
                 sql.SQL(migration_queries.create_db.format(dbname=dbname))
             )
@@ -175,7 +186,7 @@ class Migrations(Connection):
         if not backwards and target_migration is None:
             target = max(collected_migrations, default=state)
         if state == target:
-            print("Database is in the desired state, leaving...")
+            SGRString("Database is in the desired state, leaving...").print()
             sys.exit(0)
         self._check_migrations(state, target, collected_migrations)
         return collected_migrations
@@ -197,7 +208,7 @@ class Migrations(Connection):
                     verb = "Faking"
                 else:
                     verb = "Applying"
-                print(f"{verb} migration {migration_id}: {migration.name}")
+                SGRString(f"{verb} migration {migration_id}: {migration.name}").print()
             if not fake:
                 self.execute_script(migration.path)
             self.cursor.execute(
