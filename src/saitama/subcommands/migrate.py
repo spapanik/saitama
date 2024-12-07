@@ -35,9 +35,9 @@ class Migration:
 
 class Migrations(Connection):
     __slots__ = [
-        "_settings",
         "_cli_args",
         "_prepend",
+        "_settings",
         "cursor",
         "db_options",
         "migration_options",

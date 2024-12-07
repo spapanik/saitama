@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import os
 from dataclasses import asdict, dataclass
-from typing import TYPE_CHECKING, Any, Callable
+from typing import TYPE_CHECKING, Any
 
 import psycopg
 
@@ -11,6 +11,7 @@ from saitama.lib.conf import Settings
 if TYPE_CHECKING:
     import pathlib
     from argparse import Namespace
+    from collections.abc import Callable
 
 
 @dataclass
@@ -23,7 +24,7 @@ class DBOptions:
 
 
 class Connection:
-    __slots__ = ["_settings", "_cli_args", "_prepend", "cursor", "db_options"]
+    __slots__ = ["_cli_args", "_prepend", "_settings", "cursor", "db_options"]
 
     def __init__(
         self,

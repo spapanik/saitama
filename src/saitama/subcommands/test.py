@@ -22,9 +22,9 @@ class TestArgs:
 
 class UnitTest(Connection):
     __slots__ = [
-        "_settings",
         "_cli_args",
         "_prepend",
+        "_settings",
         "cursor",
         "db_options",
         "test_options",
