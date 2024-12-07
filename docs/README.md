@@ -26,7 +26,7 @@ controls the migrations and the testing.
 [test_badge]: https://github.com/spapanik/saitama/actions/workflows/tests.yml/badge.svg
 [test_url]: https://github.com/spapanik/saitama/actions/workflows/tests.yml
 [licence_badge]: https://img.shields.io/pypi/l/saitama
-[licence_url]: https://github.com/spapanik/saitama/blob/main/docs/LICENSE.md
+[licence_url]: https://saitama.readthedocs.io/en/stable/LICENSE/
 [pypi_badge]: https://img.shields.io/pypi/v/saitama
 [pypi_url]: https://pypi.org/project/saitama
 [pepy_badge]: https://pepy.tech/badge/saitama
@@ -38,4 +38,4 @@ controls the migrations and the testing.
 [ruff_badge]: https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/charliermarsh/ruff/main/assets/badge/v1.json
 [ruff_url]: https://github.com/charliermarsh/ruff
 [Documentation]: https://saitama.readthedocs.io/en/stable/
-[Changelog]: https://github.com/spapanik/saitama/blob/main/docs/CHANGELOG.md
+[Changelog]: https://saitama.readthedocs.io/en/stable/CHANGELOG/
