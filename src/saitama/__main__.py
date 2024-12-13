@@ -5,7 +5,7 @@ from saitama.subcommands.test import UnitTest
 
 def main() -> None:
     args = parse_args()
-    if args.command == "migrate":
+    if args.subcommand == "migrate":
         Migrations(args).run()
-    elif args.command == "test":
+    elif args.subcommand == "test":  # pragma: no branch
         UnitTest(args).run()

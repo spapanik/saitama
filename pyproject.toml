@@ -159,7 +159,7 @@ data_file = ".cov_cache/coverage.dat"
 exclude_also = [
     "if TYPE_CHECKING:",
 ]
-fail_under = 5
+fail_under = 35
 precision = 2
 show_missing = true
 skip_covered = true
