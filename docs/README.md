@@ -2,7 +2,7 @@
 
 [![build][build_badge]][build_url]
 [![lint][lint_badge]][lint_url]
-[![tests][test_badge]][test_url]
+[![tests][tests_badge]][tests_url]
 [![license][licence_badge]][licence_url]
 [![codecov][codecov_badge]][codecov_url]
 [![readthedocs][readthedocs_badge]][readthedocs_url]
@@ -25,8 +25,8 @@ controls the migrations and the testing.
 [build_url]: https://github.com/spapanik/saitama/actions/workflows/build.yml
 [lint_badge]: https://github.com/spapanik/saitama/actions/workflows/lint.yml/badge.svg
 [lint_url]: https://github.com/spapanik/saitama/actions/workflows/lint.yml
-[test_badge]: https://github.com/spapanik/saitama/actions/workflows/tests.yml/badge.svg
-[test_url]: https://github.com/spapanik/saitama/actions/workflows/tests.yml
+[tests_badge]: https://github.com/spapanik/saitama/actions/workflows/tests.yml/badge.svg
+[tests_url]: https://github.com/spapanik/saitama/actions/workflows/tests.yml
 [licence_badge]: https://img.shields.io/pypi/l/saitama
 [licence_url]: https://saitama.readthedocs.io/en/stable/LICENSE/
 [codecov_badge]: https://codecov.io/github/spapanik/saitama/graph/badge.svg?token=Q20F84BW72
