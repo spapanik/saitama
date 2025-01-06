@@ -53,6 +53,10 @@ jobs:
           uv venv .venv
           "VIRTUAL_ENV=.venv" | Out-File -FilePath $env:GITHUB_ENV -Append
           "$PWD/.venv/Scripts" | Out-File -FilePath $env:GITHUB_PATH -Append
+      - name: Link libpq (macOS)
+        if: ${{ runner.os == 'macOS' }}
+        run: |
+          brew link --force libpq
       - name: Install dependencies
         run: |
           yam install -g main -g test
