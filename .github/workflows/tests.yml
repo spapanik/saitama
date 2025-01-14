@@ -38,7 +38,7 @@ jobs:
         run: |
           python -m pip install --upgrade pipx
           python -m pipx ensurepath
-          pipx install uv phosphorus yamk
+          pipx install uv yamk
       - name: Create and activate a virtual environment (${{ matrix.os }})
         shell: bash
         if: ${{ runner.os != 'Windows' }}
@@ -58,8 +58,10 @@ jobs:
         run: |
           brew link --force libpq
       - name: Install dependencies
+        env:
+          UV_GROUPS: --no-dev --group test
         run: |
-          yam install -g main -g test
+          yam install
       - name: Test the project
         run: |
           yam -e tests --cov --cov-report=xml --junitxml=junit.xml -o junit_family=legacy
