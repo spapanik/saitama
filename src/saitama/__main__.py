@@ -1,4 +1,4 @@
-from saitama.lib.parser import parse_args
+from saitama.lib.cli import parse_args
 from saitama.subcommands.migrate import Migrations
 from saitama.subcommands.test import UnitTest
 

@@ -2,7 +2,7 @@ from unittest import mock
 
 import pytest
 
-from saitama.lib.parser import parse_args
+from saitama.lib.cli import parse_args
 
 
 @mock.patch("sys.argv", ["punch", "migrate"])
