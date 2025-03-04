@@ -42,7 +42,7 @@ class Connection:
         with path.open() as file:
             self.cursor.execute(file.read())
 
-    def _run_commands(  # type: ignore[misc]
+    def _run_commands(  # type: ignore[explicit-any]
         self,
         *commands: Callable[[], None],
         get_output: bool = False,
