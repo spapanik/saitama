@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 
 ## [Unreleased]
 
+### Changed
+
+- Use dj_settings to parse the settings
+- Dropped python 3.8 support
+- Dropped python 3.9 support
+
 ## [0.6.0] - 2024-01-06
 
 ### Added
