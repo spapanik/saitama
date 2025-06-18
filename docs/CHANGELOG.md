@@ -16,69 +16,69 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 
 ### Added
 
--   Added default settings file
+- Added default settings file
 
 ### Changed
 
--   Use dj_settings to parse the settings
--   Dropped python 3.7 support
+- Use dj_settings to parse the settings
+- Dropped python 3.7 support
 
 ### Removed
 
--   Removed changelog from the published wheel
+- Removed changelog from the published wheel
 
 ### Changed
 
--   Swap psycopg2 for psycopg
+- Swap psycopg2 for psycopg
 
 ## [0.5.0] - 2022-01-05
 
 ### Added
 
--   Added python310 support
+- Added python310 support
 
 ### Removed
 
--   Dropped python36 support
+- Dropped python36 support
 
 ## [0.4.0] - 2020-02-26
 
 ### Removed
 
--   Removed the pastel dependency
+- Removed the pastel dependency
 
 ## [0.3.1] - 2019-09-30
 
 ### Added
 
--   Made the settings path configurable
--   Made the report of the test results more fine-grained
+- Made the settings path configurable
+- Made the report of the test results more fine-grained
 
 ## [0.3.0] - 2019-09-24
 
 ### Added
 
--   Added database tests
+- Added database tests
 
 ## [0.2.1] - 2019-09-24
 
 ### Fixed
 
--   Fixed a connection issue
+- Fixed a connection issue
 
 ## [0.2.0] - 2019-09-24
 
 ### Added
 
--   Added database migrations
+- Added database migrations
 
 ## [0.1.0] - 2019-09-18
 
 ### Added
 
--   Added the initial project structure
+- Added the initial project structure
 
-[Keep a Changelog]: https://keepachangelog.com/en/1.0.0/
+[Keep a Changelog]: https://keepachangelog.com/en/1.1.0/
 [Semantic Versioning]: https://semver.org/spec/v2.0.0.html
 [Unreleased]: https://github.com/spapanik/saitama/compare/v0.6.0...master
 [0.6.0]: https://github.com/spapanik/saitama/compare/v0.5.0...v0.6.0

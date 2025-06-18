@@ -4,8 +4,8 @@
 controls the migrations and the testing. `punch` follows the GNU
 recommendations for command line interfaces, and offers:
 
--   `-h` or `--help` to print help, and
--   `-V` or `--version` to print the version
+- `-h` or `--help` to print help, and
+- `-V` or `--version` to print the version
 
 ## Migrations
 
