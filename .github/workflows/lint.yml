@@ -48,3 +48,6 @@ jobs:
       - name: Lint the project
         run: |
           yam -e lint
+      - name: Run mypy
+        run: |
+          mypy .
