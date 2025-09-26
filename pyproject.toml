@@ -49,21 +49,23 @@ punch = "saitama.__main__:main"
 dev = [
     "ipdb~=0.13",
     "ipython~=8.37",
+    "ptpython~=3.0",
     { include-group = "lint" },
     { include-group = "test" },
     { include-group = "docs" },
 ]
 lint = [
-    "ty~=0.0.1a20",
-    "ruff~=0.12",
+    "mypy~=1.18",  # Keep mypy for CI/CD
+    "ty~=0.0.1a21",
+    "ruff~=0.13",
     { include-group = "test_core" },
 ]
 test = [
-    "pytest-cov~=6.2",
+    "pytest-cov~=7.0",
     { include-group = "test_core" },
 ]
 test_core = [
-    "pytest~=8.4",
+    "pytest~=9.0",
 ]
 docs = [
     "mkdocs~=1.6",
@@ -73,8 +75,8 @@ docs = [
     "pymdown-extensions~=10.15",
 ]
 
-[tool.phosphorus.dynamic]
-version = { file = "src/saitama/__version__.py" }
+[tool.phosphorus.dynamic.version]
+file = "src/saitama/__version__.py"
 
 [tool.mypy]
 # Keep mypy for CI/CD
@@ -146,9 +148,13 @@ forced-separate = [
 ]
 split-on-trailing-comma = false
 
-[tool.pytest.ini_options]
-addopts = "-ra -v"
-testpaths = "tests"
+[tool.pytest]
+minversion = "9.0"
+strict = true
+addopts = ["-ra", "-v"]
+testpaths = [
+    "tests",
+]
 
 [tool.coverage.run]
 branch = true
@@ -157,7 +163,7 @@ source = [
 ]
 data_file = ".cov_cache/coverage.dat"
 omit = [
-    "src/saitama/lib/type_defs.py",
+    "src/**/type_defs.py",
 ]
 
 [tool.coverage.report]

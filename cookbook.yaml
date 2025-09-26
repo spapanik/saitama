@@ -10,7 +10,7 @@ build:
   requires:
     - clean
   commands:
-    - ${RUNNER} p build
+    - uv build
 
 install:
   phony: true
@@ -37,6 +37,14 @@ lint:
     - ${RUNNER} ruff format --check .
     - ${RUNNER} uv lock --check
     - ${RUNNER} ty check .
+
+ci-lint:
+  phony: true
+  requires:
+    - lint
+  commands:
+    # Keep mypy for CI/CD
+    - ${RUNNER} mypy .
 
 tests:
   phony: true
