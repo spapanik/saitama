@@ -40,7 +40,7 @@ class Connection:
 
     def execute_script(self, path: pathlib.Path) -> None:
         with path.open() as file:
-            self.cursor.execute(file.read())
+            self.cursor.execute(file.read())  # ty: ignore[no-matching-overload]
 
     def _run_commands(  # type: ignore[explicit-any]
         self,

@@ -129,12 +129,16 @@ class Migrations(Connection):
                     ]
                 ).print()
             self.cursor.execute(migration_queries.terminate_db, {"dbname": dbname})
-            self.cursor.execute(migration_queries.drop_db.format(dbname=dbname))
+            self.cursor.execute(
+                sql.SQL(migration_queries.drop_db).format(dbname=sql.Identifier(dbname))
+            )
         if not exists or drop:
             if not exists and not quiet:
                 SGRString(f"Database {dbname} does not exist, creating...").print()
             self.cursor.execute(
-                sql.SQL(migration_queries.create_db.format(dbname=dbname))
+                sql.SQL(migration_queries.create_db).format(
+                    dbname=sql.Identifier(dbname)
+                )
             )
 
     @staticmethod

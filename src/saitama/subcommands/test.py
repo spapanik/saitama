@@ -5,6 +5,7 @@ import sys
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
+from psycopg import sql
 from pyutilkit.term import SGRCodes, SGRString
 
 from saitama.queries import test as test_queries
@@ -69,7 +70,11 @@ class UnitTest(Connection):
     def _run_single_test(self, test_name: str) -> None:
         SGRString(f"Running {test_name}...", suffix="\t").print()
         self.cursor.execute(test_queries.reset_assertions)
-        self.cursor.execute(test_queries.run_single_test.format(test_name=test_name))
+        self.cursor.execute(
+            sql.SQL(test_queries.run_single_test).format(
+                test_name=sql.Identifier(test_name)
+            )
+        )
         response = self.cursor.fetchone()
         if response is None:
             msg = "Test isn't a valid sql file."
