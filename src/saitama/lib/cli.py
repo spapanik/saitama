@@ -1,23 +1,94 @@
+from __future__ import annotations
+
 import sys
-from argparse import ArgumentParser, Namespace
+from argparse import SUPPRESS, ArgumentParser, Namespace
+from dataclasses import dataclass
+from typing import TYPE_CHECKING
 
 from saitama.__version__ import __version__
+
+if TYPE_CHECKING:
+    from typing_extensions import Self  # upgrade: py3.10: import from typing
 
 sys.tracebacklimit = 0
 
 
-def add_common_args(parser: ArgumentParser) -> None:
-    parser.add_argument("-H", "--host", help="The postgres host")
-    parser.add_argument("-P", "--port", help="The postgres port")
-    parser.add_argument("-d", "--dbname", help="The postgres database")
-    parser.add_argument("-u", "--user", help="The postgres user")
-    parser.add_argument("-p", "--password", help="The user's password")
-    parser.add_argument("-s", "--settings", help="The path to the settings file")
+@dataclass(frozen=True, slots=True)
+class CommonCliArgs:
+    host: str | None
+    port: int | None
+    dbname: str | None
+    user: str | None
+    password: str | None
+    settings: str | None
+    verbosity: int
+
+    @classmethod
+    def from_args(cls, args: Namespace, /) -> Self:
+        return cls(
+            host=args.host,
+            port=args.port,
+            dbname=args.dbname,
+            user=args.user,
+            password=args.password,
+            settings=args.settings,
+            verbosity=args.verbosity,
+        )
 
 
-def parse_args() -> Namespace:
+@dataclass(frozen=True, slots=True)
+class MigrateCliArgs:
+    migration: int | None
+    drop: bool
+    fake: bool
+    backwards: bool
+    yes: bool
+
+    @classmethod
+    def from_args(cls, args: Namespace, /) -> Self:
+        return cls(
+            migration=args.migration,
+            drop=args.drop,
+            fake=args.fake,
+            backwards=args.backwards,
+            yes=args.yes,
+        )
+
+
+@dataclass(frozen=True, slots=True)
+class TestCliArgs:
+    @classmethod
+    def from_args(cls, _args: Namespace, /) -> Self:
+        return cls()
+
+
+@dataclass(frozen=True, slots=True)
+class CliArgs:
+    common: CommonCliArgs
+    migrate_subcommand: MigrateCliArgs | None
+    test_subcommand: TestCliArgs | None
+
+    @classmethod
+    def from_args(cls, args: Namespace, /) -> Self:
+        common = CommonCliArgs.from_args(args)
+        migrate_subcommand = None
+        test_subcommand = None
+        match args.subcommand:
+            case "migrate":
+                migrate_subcommand = MigrateCliArgs.from_args(args)
+            case "test":  # pragma: no cover
+                test_subcommand = TestCliArgs.from_args(args)
+        return cls(
+            common=common,
+            migrate_subcommand=migrate_subcommand,
+            test_subcommand=test_subcommand,
+        )
+
+
+def parse_args() -> CliArgs:
     parser = ArgumentParser(
-        prog="punch", description="A utility to manage testing and migrating a database"
+        prog="punch",
+        description="A utility to manage testing and migrating a database",
     )
     parser.add_argument(
         "-V",
@@ -34,7 +105,7 @@ def parse_args() -> Namespace:
         action="count",
         default=0,
         dest="verbosity",
-        help="increase the level of verbosity",
+        help=SUPPRESS,
     )
 
     subparsers = parser.add_subparsers(dest="subcommand", required=True)
@@ -48,7 +119,14 @@ def parse_args() -> Namespace:
         type=int,
         help="The target migration number. If unspecified, will migrate to latest one",
     )
-    add_common_args(migration_parser)
+    migration_parser.add_argument("-H", "--host", help="The postgres host")
+    migration_parser.add_argument("-P", "--port", type=int, help="The postgres port")
+    migration_parser.add_argument("-d", "--dbname", help="The postgres database")
+    migration_parser.add_argument("-u", "--user", help="The postgres user")
+    migration_parser.add_argument("-p", "--password", help="The user's password")
+    migration_parser.add_argument(
+        "-s", "--settings", help="The path to the settings file"
+    )
     migration_parser.add_argument(
         "-D",
         "--drop",
@@ -71,10 +149,15 @@ def parse_args() -> Namespace:
     test_parser = subparsers.add_parser(
         "test", parents=[parent_parser], help="Test runner"
     )
-    add_common_args(test_parser)
+    test_parser.add_argument("-H", "--host", help="The postgres host")
+    test_parser.add_argument("-P", "--port", type=int, help="The postgres port")
+    test_parser.add_argument("-d", "--dbname", help="The postgres database")
+    test_parser.add_argument("-u", "--user", help="The postgres user")
+    test_parser.add_argument("-p", "--password", help="The user's password")
+    test_parser.add_argument("-s", "--settings", help="The path to the settings file")
 
     args = parser.parse_args()
     if args.verbosity > 0:
         sys.tracebacklimit = 1000
 
-    return args
+    return CliArgs.from_args(args)

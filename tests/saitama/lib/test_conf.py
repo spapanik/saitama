@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import pathlib
-from argparse import Namespace
 from typing import TYPE_CHECKING
 
 from saitama.lib.conf import Settings
@@ -17,7 +16,7 @@ def test_default_settings(
 ) -> None:
     monkeypatch.chdir(tmp_path)
     monkeypatch.delenv("SAITAMA_SETTINGS", raising=False)
-    settings = Settings(Namespace(settings=None))
+    settings = Settings()
     assert settings.host is None
     assert settings.port is None
     assert settings.dbname is None
@@ -48,7 +47,7 @@ tests = "sql/tests"
 """
     )
     monkeypatch.setenv("SAITAMA_SETTINGS", str(settings_path))
-    settings = Settings(Namespace(settings=None))
+    settings = Settings()
     assert settings.host == "localhost"
     assert settings.port == 5432
     assert settings.dbname == "saitama"
@@ -66,10 +65,10 @@ def test_absolute_paths(tmp_path: pathlib.Path) -> None:
     settings_path.write_text(
         f"""
 [tool.saitama]
-migrations = "{migrations}"
-tests = "{tests}"
+migrations = "{migrations.as_posix()}"
+tests = "{tests.as_posix()}"
 """
     )
-    settings = Settings(Namespace(settings=str(settings_path)))
+    settings = Settings(str(settings_path))
     assert settings.migrations == migrations
     assert settings.tests == tests

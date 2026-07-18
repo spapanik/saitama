@@ -14,7 +14,8 @@ from saitama.subcommands.migrate import Migrations
 
 if TYPE_CHECKING:
     import pathlib
-    from argparse import Namespace
+
+    from saitama.lib.cli import CommonCliArgs
 
 
 @dataclass
@@ -33,7 +34,7 @@ class UnitTest(Connection):
     ]
 
     def __init__(
-        self, cli_args: Namespace, prepend: str = "test", *, testing: bool = True
+        self, cli_args: CommonCliArgs, prepend: str = "test", *, testing: bool = True
     ) -> None:
         super().__init__(cli_args, prepend, testing=testing)
         self.test_options = self._test_args()

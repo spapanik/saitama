@@ -1,11 +1,11 @@
 from __future__ import annotations
 
-from argparse import Namespace
 from typing import TYPE_CHECKING
 from unittest import mock
 
 import pytest
 
+from saitama.lib.cli import CommonCliArgs
 from saitama.subcommands.common import Connection, DBOptions
 
 if TYPE_CHECKING:
@@ -14,17 +14,25 @@ if TYPE_CHECKING:
     from tests.helpers.type_defs import StrFactory
 
 
-def get_args(**kwargs: object) -> Namespace:
-    values: dict[str, object] = {
-        "host": None,
-        "port": None,
-        "dbname": None,
-        "user": None,
-        "password": None,
-        "settings": None,
-    }
-    values.update(kwargs)
-    return Namespace(**values)
+def get_args(
+    *,
+    host: str | None = None,
+    port: int | None = None,
+    dbname: str | None = None,
+    user: str | None = None,
+    password: str | None = None,
+    settings: str | None = None,
+    verbosity: int = 0,
+) -> CommonCliArgs:
+    return CommonCliArgs(
+        host=host,
+        port=port,
+        dbname=dbname,
+        user=user,
+        password=password,
+        settings=settings,
+        verbosity=verbosity,
+    )
 
 
 @mock.patch("saitama.subcommands.common.Settings")
@@ -42,7 +50,7 @@ def test_db_options_from_args(
     )
     args = get_args(
         host="args-host",
-        port="5432",
+        port=5432,
         dbname="args-db",
         user="args-user",
         password=args_password,
@@ -146,7 +154,8 @@ def test_run_commands(
     cursor.fetchall.return_value = [("result",)]
     connection_context = mock_connect.return_value.__enter__.return_value
     connection_context.cursor.return_value.__enter__.return_value = cursor
-    connection = Connection(get_args(user="user"))
+    with mock.patch.dict("os.environ", {}, clear=True):
+        connection = Connection(get_args(user="user"))
     command = mock.MagicMock()
     result = connection._run_commands(
         command, get_output=True, dbname="template1", autocommit=True

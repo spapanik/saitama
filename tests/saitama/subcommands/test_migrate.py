@@ -1,33 +1,61 @@
 import pathlib
-from argparse import Namespace
 from unittest import mock
 
 import pytest
 
+from saitama.lib.cli import CommonCliArgs, MigrateCliArgs
 from saitama.queries import migration as migration_queries
 from saitama.subcommands.migrate import Migration, MigrationArgs, Migrations
 
 
-def get_args(tmp_path: pathlib.Path, **kwargs: object) -> Namespace:
-    values: dict[str, object] = {
-        "host": None,
-        "port": None,
-        "dbname": "saitama",
-        "user": None,
-        "password": None,
-        "settings": str(tmp_path.joinpath("saitama.toml")),
-        "drop": False,
-        "yes": False,
-        "fake": False,
-        "backwards": False,
-        "migration": None,
-    }
-    values.update(kwargs)
-    return Namespace(**values)
+def _common_args(*, settings: str | None = None) -> CommonCliArgs:
+    return CommonCliArgs(
+        host=None,
+        port=None,
+        dbname="saitama",
+        user=None,
+        password=None,
+        settings=settings,
+        verbosity=0,
+    )
 
 
-def get_migrations(tmp_path: pathlib.Path, **kwargs: object) -> Migrations:
-    return Migrations(get_args(tmp_path, **kwargs))
+def _migrate_args(
+    *,
+    drop: bool = False,
+    fake: bool = False,
+    backwards: bool = False,
+    migration: int | None = None,
+    yes: bool = False,
+) -> MigrateCliArgs:
+    return MigrateCliArgs(
+        drop=drop,
+        fake=fake,
+        backwards=backwards,
+        migration=migration,
+        yes=yes,
+    )
+
+
+def get_migrations(
+    tmp_path: pathlib.Path,
+    *,
+    drop: bool = False,
+    fake: bool = False,
+    backwards: bool = False,
+    migration: int | None = None,
+    yes: bool = False,
+) -> Migrations:
+    return Migrations(
+        _common_args(settings=str(tmp_path.joinpath("saitama.toml"))),
+        migrate_args=_migrate_args(
+            drop=drop,
+            fake=fake,
+            backwards=backwards,
+            migration=migration,
+            yes=yes,
+        ),
+    )
 
 
 def test_migration_args(tmp_path: pathlib.Path) -> None:
@@ -46,7 +74,8 @@ def test_migration_args(tmp_path: pathlib.Path) -> None:
 
 
 def test_testing_migration_args(tmp_path: pathlib.Path) -> None:
-    migrations = Migrations(get_args(tmp_path), prepend="test", testing=True)
+    common = _common_args(settings=str(tmp_path.joinpath("saitama.toml")))
+    migrations = Migrations(common, prepend="test", testing=True)
     assert migrations.db_options.dbname == "test_saitama"
     assert migrations.migration_options == MigrationArgs(
         drop=True,
@@ -57,6 +86,12 @@ def test_testing_migration_args(tmp_path: pathlib.Path) -> None:
         migration_dir=tmp_path.joinpath("migrations"),
         quiet=True,
     )
+
+
+def test_migrate_args_required(tmp_path: pathlib.Path) -> None:
+    common = _common_args(settings=str(tmp_path.joinpath("saitama.toml")))
+    with pytest.raises(RuntimeError, match="migrate_args is required"):
+        Migrations(common)
 
 
 def test_run(tmp_path: pathlib.Path) -> None:
@@ -141,7 +176,8 @@ def test_prepare_db_non_interactive_drop(
 def test_prepare_db_quiet_drop(
     mock_output: mock.MagicMock, tmp_path: pathlib.Path
 ) -> None:
-    migrations = Migrations(get_args(tmp_path), testing=True)
+    common = _common_args(settings=str(tmp_path.joinpath("saitama.toml")))
+    migrations = Migrations(common, testing=True)
     migrations.cursor = mock.MagicMock()
     migrations.cursor.fetchone.return_value = (True,)
     migrations._prepare_db()
@@ -331,7 +367,8 @@ def test_fake_migrate(mock_string: mock.MagicMock, tmp_path: pathlib.Path) -> No
 
 @mock.patch("saitama.subcommands.migrate.SGRString")
 def test_quiet_migrate(mock_string: mock.MagicMock, tmp_path: pathlib.Path) -> None:
-    migrations = Migrations(get_args(tmp_path), testing=True)
+    common = _common_args(settings=str(tmp_path.joinpath("saitama.toml")))
+    migrations = Migrations(common, testing=True)
     migrations.cursor = mock.MagicMock()
     migrations.cursor.fetchone.return_value = None
     valid_migrations = {

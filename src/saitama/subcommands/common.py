@@ -10,8 +10,9 @@ from saitama.lib.conf import Settings
 
 if TYPE_CHECKING:
     import pathlib
-    from argparse import Namespace
     from collections.abc import Callable
+
+    from saitama.lib.cli import CommonCliArgs
 
 
 @dataclass
@@ -28,13 +29,13 @@ class Connection:
 
     def __init__(
         self,
-        cli_args: Namespace,
+        cli_args: CommonCliArgs,
         prepend: str | None = None,
         *,
         testing: bool = False,  # noqa: ARG002
     ) -> None:
         self._cli_args = cli_args
-        self._settings = Settings(cli_args)
+        self._settings = Settings(cli_args.settings)
         self._prepend = prepend
         self.db_options = self._get_db_options()
 

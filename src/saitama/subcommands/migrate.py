@@ -13,7 +13,8 @@ from saitama.subcommands.common import Connection
 
 if TYPE_CHECKING:
     import pathlib
-    from argparse import Namespace
+
+    from saitama.lib.cli import CommonCliArgs, MigrateCliArgs
 
 
 @dataclass
@@ -49,17 +50,22 @@ class Migrations(Connection):
     )
 
     def __init__(
-        self, cli_args: Namespace, prepend: str | None = None, *, testing: bool = False
+        self,
+        cli_args: CommonCliArgs,
+        prepend: str | None = None,
+        *,
+        testing: bool = False,
+        migrate_args: MigrateCliArgs | None = None,
     ) -> None:
         super().__init__(cli_args, prepend, testing=testing)
-        self.migration_options = self._migration_args(cli_args, testing=testing)
+        self.migration_options = self._migration_args(migrate_args, testing=testing)
 
     def run(self) -> None:
         self._run_commands(self._prepare_db, dbname="template1", autocommit=True)
         self._run_commands(self._create_migration_schema, self._migrate)
 
     def _migration_args(
-        self, args: Namespace, *, testing: bool = False
+        self, migrate_args: MigrateCliArgs | None, *, testing: bool = False
     ) -> MigrationArgs:
         migrations_dir = self._settings.migrations
         if testing:
@@ -72,13 +78,15 @@ class Migrations(Connection):
                 migration_dir=migrations_dir,
                 quiet=True,
             )
-
+        if migrate_args is None:
+            msg = "migrate_args is required"
+            raise RuntimeError(msg)
         return MigrationArgs(
-            drop=args.drop,
-            interactive=not args.yes,
-            fake=args.fake,
-            backwards=args.backwards,
-            migration=args.migration,
+            drop=migrate_args.drop,
+            interactive=not migrate_args.yes,
+            fake=migrate_args.fake,
+            backwards=migrate_args.backwards,
+            migration=migrate_args.migration,
             migration_dir=migrations_dir,
             quiet=False,
         )

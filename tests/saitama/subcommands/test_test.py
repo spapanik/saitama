@@ -1,21 +1,23 @@
+import os
 import pathlib
-from argparse import Namespace
 from unittest import mock
 
 import pytest
 
+from saitama.lib.cli import CommonCliArgs
 from saitama.queries import test as test_queries
 from saitama.subcommands.test import TestArgs as UnitTestArgs, UnitTest
 
 
-def get_args(tmp_path: pathlib.Path) -> Namespace:
-    return Namespace(
+def get_args(tmp_path: pathlib.Path) -> CommonCliArgs:
+    return CommonCliArgs(
         host=None,
         port=None,
         dbname="saitama",
         user=None,
         password=None,
         settings=str(tmp_path.joinpath("saitama.toml")),
+        verbosity=0,
     )
 
 
@@ -43,7 +45,7 @@ def test_run_passes(
         mock.call(unit_test._prepare_db, unit_test._run_tests, get_output=True)
     ]
     assert mock_string.call_args_list == [
-        mock.call("Test results:", prefix="\n", is_error=False),
+        mock.call("Test results:", prefix=os.linesep, is_error=False),
         mock.call("All tests passed!", params=[mock.ANY]),
     ]
 
@@ -68,7 +70,7 @@ def test_run_fails(
     assert error.value.code == 1
     assert mock_migrations.return_value.run.call_args_list == [mock.call()]
     assert mock_string.call_args_list == [
-        mock.call("Test results:", prefix="\n", is_error=True),
+        mock.call("Test results:", prefix=os.linesep, is_error=True),
         mock.call("The following tests failed:", params=[mock.ANY], is_error=True),
         mock.call(" * test_one"),
         mock.call(" * test_two"),
