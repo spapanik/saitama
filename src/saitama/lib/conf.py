@@ -14,7 +14,7 @@ class Settings:
         self.path = pathlib.Path(pathname)
         settings = {}
         if self.path.exists():
-            data = ConfigParser([self.path]).data
+            data = ConfigParser(self.path).data
             settings = data.get("tool", {}).get("saitama", {})
         self.host = settings.get("host")
         self.port = settings.get("port")
