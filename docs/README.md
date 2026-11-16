@@ -30,7 +30,7 @@ controls the migrations and the testing.
 [licence_url]: https://saitama.readthedocs.io/en/stable/LICENSE/
 [codecov_badge]: https://codecov.io/github/spapanik/saitama/graph/badge.svg?token=Q20F84BW72
 [codecov_url]: https://codecov.io/github/spapanik/saitama
-[readthedocs_badge]: https://readthedocs.org/projects/saitama/badge/?version=latest
+[readthedocs_badge]: https://app.readthedocs.org/projects/saitama/badge/?version=latest
 [readthedocs_url]: https://saitama.readthedocs.io/en/latest/
 [pypi_badge]: https://img.shields.io/pypi/v/saitama
 [pypi_url]: https://pypi.org/project/saitama
